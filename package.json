@@ -1,0 +1,30 @@
+{
+  "name": "pumpkin-juice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "babel-node src/index",
+    "dev": "nodemon src/index --exec babel-node"
+  },
+  "keywords": [],
+  "author": "arleycas",
+  "license": "ISC",
+  "dependencies": {
+    "boxicons": "^2.1.1",
+    "connect-flash": "^0.1.1",
+    "express": "^4.17.2",
+    "express-handlebars": "^6.0.2",
+    "express-session": "^1.17.3",
+    "mongoose": "^6.1.8",
+    "morgan": "^1.10.0",
+    "sweetalert2": "^11.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}

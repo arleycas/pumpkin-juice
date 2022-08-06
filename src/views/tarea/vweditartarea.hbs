@@ -1,0 +1,28 @@
+<h1>Editar tareta</h1>
+
+<input id='inpIdTarea' type='text' value='{{objTarea._id}}' />
+
+<input id='inpDescripción' type='text' />
+
+<select id='selEstado' class='form-select' aria-label='Default select example'>
+  <option selected>Selecciona estado</option>
+  <option value='Doing'>Doing</option>
+  <option value='To Do'>To Do</option>
+  <option value='Done'>Done</option>
+</select>
+
+<input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
+<input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
+
+<select id='selCategoria' class='form-select' aria-label='Default select example'>
+  <option selected>Selecciona categoria</option>
+
+</select>
+<select id='selSubcategoria' class='form-select' aria-label='Default select example'>
+  <option selected>Selecciona subcategoria</option>
+
+</select>
+
+<button id='btnEditar' type='button' class='btn btn-primary'>Editar</button>
+
+<script src='/js/vweditartarea.js'></script>

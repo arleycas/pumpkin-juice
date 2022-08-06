@@ -1,0 +1,13 @@
+* {
+  font-family: 'Kanit', sans-serif;
+}
+
+.display_none {
+  display: none;
+}
+
+.txt-danger {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #a70000;
+}

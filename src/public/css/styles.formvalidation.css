@@ -1,0 +1,12 @@
+.feedback_box {
+  border: 1px solid;
+  color: red;
+}
+
+.inp_invalid {
+  border: 2px solid red;
+}
+
+.inp_invalid::after {
+  content: "xd";
+}

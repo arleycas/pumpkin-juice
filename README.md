@@ -95,3 +95,10 @@ https://www.youtube.com/watch?v=qJ5R9WTW0_E Con MySQL (quede en 1 h)
 - Si nana borra una categoria o subcategoria la cual este asociada a una o mas tareas, que debe pasar?
   posibilidad 1) Eliminar todas las tareas asociadas a esa cat o subcat
   posibilidad 2) No dejar eliminar la cat o subcat, hasta que ya no hayan tareas asociadas
+
+
+## Despliegue en servidor
+
+En el min 2:55:00 del video 'Nodejs Mongodb CRUD (Desarrollo y Despliegue), Aplicación web desde Cero' Fazt explica sobre como poner el producción el proyecto
+
+El comando build del package.json lo que hace el convertir mi proyecto en algo que pueda ser leido exclusivamente por interpretes de node, es codigo que no se debe tocar

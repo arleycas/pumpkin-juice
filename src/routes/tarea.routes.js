@@ -172,6 +172,129 @@ router.post('/eliminar', async (req, res, next) => {
 });
 
 
+// * INFORME
+
+// render
+router.get('/informe', (req, res) => {
+  res.render('tarea/vwinformetarea')
+});
+
+
+router.get('/getYears', async (req, res) => {
+  // const { idTarea } = req.body;
+
+  // console.log('idTareaaaa', idTarea);
+
+  try {
+    const listaTareas = await Tarea.find().lean(); // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
+    // con exec, trae el objeto ese de mongoose
+    // res.json(tarea);
+
+    // console.log(listaTareas);
+
+    let arrAnosSinFiltrar = [];
+
+    listaTareas.forEach(obj => {
+      arrAnosSinFiltrar.push(obj.updatedAt.getFullYear());
+    });
+
+    let arrAnos = arrAnosSinFiltrar.filter((item, index) => {
+      return arrAnosSinFiltrar.indexOf(item) === index;
+    });
+
+    res.json(arrAnos)
+
+  } catch (error) {
+    console.log('Error', err);
+  }
+});
+
+router.get('/getMonths', async (req, res) => {
+  // const { idTarea } = req.body;
+
+  // console.log('idTareaaaa', idTarea);
+
+  try {
+    const listaTareas = await Tarea.find().lean(), // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
+      dicMes = {
+        0: { num: 0, nombre: 'Enero' },
+        1: { num: 1, nombre: 'Febrero' },
+        2: { num: 2, nombre: 'Marzo' },
+        3: { num: 3, nombre: 'Abril' },
+        4: { num: 4, nombre: 'Mayo' },
+        5: { num: 5, nombre: 'Junio' },
+        6: { num: 6, nombre: 'Julio' },
+        7: { num: 7, nombre: 'Agosto' },
+        8: { num: 8, nombre: 'Septiembre' },
+        9: { num: 9, nombre: 'Octubre' },
+        10: { num: 10, nombre: 'Noviembre' },
+        11: { num: 11, nombre: 'Diciembre' },
+      };
+
+    console.log(listaTareas);
+
+    let arrMesesSinFiltrar = [];
+
+    listaTareas.forEach(obj => {
+      arrMesesSinFiltrar.push(obj.updatedAt.getMonth());
+    });
+
+    console.log(arrMesesSinFiltrar);
+
+    const arrMeses = arrMesesSinFiltrar.filter((item, index) => {
+      return arrMesesSinFiltrar.indexOf(item) === index;
+    });
+
+    let arrRes = [];
+
+    arrMeses.forEach(mes => {
+      arrRes.push(dicMes[mes]);
+    });
+
+    res.json(arrRes)
+
+  } catch (error) {
+    console.log('Error', err);
+  }
+});
+
+router.post('/getTareasInforme', async (req, res) => {
+  const { ano, mes } = req.body;
+
+  // console.log('idTareaaaa', idTarea);
+  try {
+    const arrObjTareas = await Tarea.find({
+      createdAt: {
+        $gte: new Date(ano, mes, 1),
+        $lt: new Date(ano, mes, 31)
+      }
+    }).lean();
+
+    let arrObjData = [];
+    arrObjTareas.forEach(async obj => {
+      console.log(obj);
+
+      const objCategoria = await Categoria.findOne({ _id: obj.categoria }).lean();
+      console.log(objCategoria);
+
+      arrObjData.push({
+        _id: obj._id,
+        descripcion: obj.descripcion,
+        estado: obj.estado,
+        categoria: objCategoria.categoria,
+        subcategoria: objCategoria.subcategoria.filter(sub => sub._id.toString() === obj.subcategoria)[0].nombre,
+        fecha: obj.createdAt
+      });
+
+      if (arrObjTareas.length === arrObjData.length) {
+        res.json(arrObjData);
+      }
+    });
+
+  } catch (error) {
+    console.log('Error', error);
+  }
+});
 
 // router.get('/getTodasTareas', async (req, res) => {
 // });

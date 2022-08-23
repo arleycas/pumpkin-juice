@@ -1,0 +1,29 @@
+<div class='container'>
+  <h2>Descarga Informe</h2>
+
+  <select id='selAno' class='form-select' aria-label='Default select example'>
+    <option selected>Selecciona el año</option>
+  </select>
+
+  <select id='selMes' class='form-select' aria-label='Default select example'>
+    <option selected>Selecciona el mes</option>
+  </select>
+
+  <button id='btnBuscar' data-id='' type='button' class='btn btn-primary'>Busca <i class='bx bx-search-alt-2'></i></button>
+
+  <table id='tblInforme' class='table'>
+    <thead>
+      <tr>
+        <th>Descripción</th>
+        <th>Categoría</th>
+        <th>Subcategoría</th>
+        <th>Estado</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody id='bodyTabla'></tbody>
+  </table>
+
+  <script src='/js/tarea/vwinformetarea.js'></script>
+
+</div>

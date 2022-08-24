@@ -96,9 +96,13 @@ https://www.youtube.com/watch?v=qJ5R9WTW0_E Con MySQL (quede en 1 h)
   posibilidad 1) Eliminar todas las tareas asociadas a esa cat o subcat
   posibilidad 2) No dejar eliminar la cat o subcat, hasta que ya no hayan tareas asociadas
 
-
 ## Despliegue en servidor
 
-En el min 2:55:00 del video 'Nodejs Mongodb CRUD (Desarrollo y Despliegue), Aplicación web desde Cero' Fazt explica sobre como poner el producción el proyecto
+En el min 2:55:00 del video 'Nodejs Mongodb CRUD (Desarrollo y Despliegue), Aplicación web desde Cero' Fazt explica sobre como poner el producción el proyecto, y como funciona el comando build del package.json
 
 El comando build del package.json lo que hace el convertir mi proyecto en algo que pueda ser leido exclusivamente por interpretes de node, es codigo que no se debe tocar
+
+https://pumpkin-juice.herokuapp.com/tarea/informe
+
+NOTA: Heroku ya está enlazado con mi github, ya solo es hacer los push y allá en heroku se reciven automaticamente.
+Para que se reciban los cambios al parecer hay que meterese al apartado deploy de la app y en la parte de abajo darle en "Deploy Branch"

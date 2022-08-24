@@ -37,10 +37,4 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-
-  function cleanFeedbacks() {
-    document.querySelectorAll('.feedback_box').forEach(elem => {
-      elem.innerHTML = '';
-    });
-  }
 });

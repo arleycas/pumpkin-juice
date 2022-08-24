@@ -79,6 +79,12 @@ function ocultarLoader() {
   document.querySelector('#contLoader').style.display = 'none';
 }
 
+function cleanFeedbacks() {
+  document.querySelectorAll('.feedback_box').forEach(elem => {
+    elem.innerHTML = '';
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   messageFlash();
 });

@@ -56,11 +56,13 @@ router.get('/lista/:pag', async (req, res) => {
 
     console.log('cant tareas', arrObjTareas.length);
 
+    //1. Se traen todas las tareas (pero como cada tarea tiene en cat y sub tiene es un código en vez de un nombre toca hacer un consulta para saber ese codigo que significa)
     let arrObjData = [];
     arrObjTareas.forEach(async obj => {
 
       const
         idCategoria = obj.categoria,
+        idSubcatTarea = obj.subcategoria,
         objCategoria = await Categoria.findOne({ _id: idCategoria }).lean();
 
       // console.log(objCategoria);
@@ -71,13 +73,14 @@ router.get('/lista/:pag', async (req, res) => {
       // console.log('esto otro', objCategoria.subcategoria[0]._id.toString());
       // console.log('sirve?',);
 
-      arrObjData.push({
+      await arrObjData.push({
         _id: obj._id,
         descripcion: obj.descripcion,
         estado: obj.estado,
         categoria: objCategoria.categoria,
-        subcategoria: objCategoria.subcategoria.filter(sub => sub._id.toString() === obj.subcategoria)[0].nombre
+        subcategoria: getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea })
       });
+
 
       if (arrObjTareas.length === arrObjData.length) {
         res.render('tarea/vwlistatareas', { title: 'Lista tareas', arrObjData, arrPaginacion })
@@ -93,6 +96,23 @@ router.get('/lista/:pag', async (req, res) => {
     console.log('Error', err);
   }
 });
+
+function getNombreSubcategoria(data) {
+  // arrSubcat: Es el listado de subcategorias guardadas en documento categoria (con id y nombre)
+  // idSubcatTarea: Es el id que está guardado en la tarea
+  const { arrSubcat, idSubcatTarea } = data;
+  let res = null;
+
+  arrSubcat.forEach(subcat => {
+    if (subcat._id.toString() === idSubcatTarea) res = subcat.nombre;
+  });
+
+  if (res === null) {
+    return `No existe subcategoria ${idSubcatTarea}`
+  }
+
+  return res;
+}
 
 // render
 router.get('/agregar', (req, res) => {
@@ -274,7 +294,10 @@ router.post('/getTareasInforme', async (req, res) => {
     arrObjTareas.forEach(async obj => {
       console.log(obj);
 
-      const objCategoria = await Categoria.findOne({ _id: obj.categoria }).lean();
+      const
+        objCategoria = await Categoria.findOne({ _id: obj.categoria }).lean(),
+        idSubcatTarea = obj.subcategoria;
+
       console.log(objCategoria);
 
       arrObjData.push({
@@ -282,7 +305,7 @@ router.post('/getTareasInforme', async (req, res) => {
         descripcion: obj.descripcion,
         estado: obj.estado,
         categoria: objCategoria.categoria,
-        subcategoria: objCategoria.subcategoria.filter(sub => sub._id.toString() === obj.subcategoria)[0].nombre,
+        subcategoria: getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea }),
         fecha: obj.createdAt
       });
 

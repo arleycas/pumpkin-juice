@@ -65,7 +65,7 @@ router.get('/lista/:pag', async (req, res) => {
         idSubcatTarea = obj.subcategoria,
         objCategoria = await Categoria.findOne({ _id: idCategoria }).lean();
 
-      // console.log(objCategoria);
+      console.log('busca', objCategoria);
 
       // console.log('OBJETIFICADO!!!!', objCategoria);
 
@@ -77,8 +77,8 @@ router.get('/lista/:pag', async (req, res) => {
         _id: obj._id,
         descripcion: obj.descripcion,
         estado: obj.estado,
-        categoria: objCategoria.categoria,
-        subcategoria: getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea })
+        categoria: objCategoria ? objCategoria.categoria : 'No existe categoría',
+        subcategoria: objCategoria ? getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea }) : 'No existe subcategoria'
       });
 
 

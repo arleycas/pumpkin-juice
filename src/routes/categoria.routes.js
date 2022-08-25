@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import Categoria from '../models/Categoria';
+import Tarea from '../models/Tarea';
 import Commons from './func/commons';
 
 const router = Router();
@@ -131,7 +132,18 @@ router.post('/agregar-categoria', async (req, res) => {
 });
 
 router.post('/editar-categoria', async (req, res) => {
-  // nada aun xd
+  // todo, validar strings que vienen del front
+  const
+    { idCategoria, categoriaNueva, categoriaVieja } = req.body,
+    filter = { _id: idCategoria },
+    update = { categoria: categoriaNueva },
+    resUpdateCategoria = await Categoria.findOneAndUpdate(filter, update);
+
+  console.log(resUpdateCategoria);
+
+  req.flash('messageSuccess', `Nombre de categoría actualizado de <span style="color: #9f0000">${categoriaVieja}</span> a <span style="color: #42A9DF">${categoriaNueva}</span>`);
+  res.json(true);
+
 });
 
 router.post('/editar-subcategoria', async (req, res) => {
@@ -145,7 +157,6 @@ router.post('/editar-subcategoria', async (req, res) => {
     const objCategoria = await Categoria.findById(idCategoria).lean();
 
     console.log('obj categoría', objCategoria);
-
 
     const arrSubcategorias = objCategoria.subcategoria;
 
@@ -171,11 +182,13 @@ router.post('/editar-subcategoria', async (req, res) => {
       filter = { _id: idCategoria },
       update = { subcategoria: nuevoArrSucategorias };
 
+    console.log('se actualizó', updateCategoria);
     const updateCategoria = await Categoria.findOneAndUpdate(filter, update);
+    res.json(true);
 
-    console.log('se actualizó', updateCategoria); // TODO, quedé!! ya actualizá perfecto :) YUJUUUUUU gunciona 27 mayo
 
-    //TODO, ahora arreglar las listas de select de subcategoría para que traiga el valor dependiendo del id y no en si del valor
+    res.json(true);
+
 
   } catch (err) {
     console.log('Error', err);
@@ -214,7 +227,7 @@ router.post('/eliminar-categoria', async (req, res) => {
     const { idCategoria } = req.body;
     console.log(idCategoria);
 
-    let objRevision = {
+    let objResponse = Commons.validateDataBackend({
       categoria: {
         campo: 'listado categorías',
         valor: idCategoria,
@@ -223,66 +236,56 @@ router.post('/eliminar-categoria', async (req, res) => {
         idFeedback: '#feedBackConfigCategoria',
         validations: ['empty']
       }
-    }
-
-    let
-      objResponse = { isValid: true, faltantes: [] };
-
-    // 1. se recorre cada obj del obj revisión (cada objeto representa un elemento de formulario)
-    for (const property in objRevision) {
-      console.log(`${property}: ${objRevision[property]}`);
-
-      if (Object.hasOwnProperty.call(objRevision, property)) {
-        const element = objRevision[property];
-        let objFaltante = { idInput: element.idElem, idFeedback: element.idFeedback, msgs: [] };
-
-        // 2. cada objeto del formulario tiene un array que dice que validaciones hay que hacercele (si está vacio, en un futuro si es un correo, o si debe ser númerico etc)
-        // si llega a fallar una validación, se rellena el objResponse.faltantes con un objeto indicando el input y los mensajes indicando que falta
-        element.validations.forEach(key => {
-
-          switch (key) {
-            case 'empty':
-              if (isEmpty(element.valor))
-                objFaltante.msgs.push('Selecciona una opción pofavo ♥')
-              break;
-
-            case 'prueba':
-              if (true)
-                objFaltante.msgs.push('Prueba pa sabe 😋')
-              break;
-
-            default:
-              break;
-          }
-        });
-
-        if (objFaltante.msgs.length) {
-          objResponse.faltantes.push(objFaltante);
-        }
-      }
-    }
+    });
 
     if (objResponse.faltantes.length) {
       objResponse.isValid = false; // en realidad este no es tan necesario, ya que si objResponse.faltantes tiene algun objeto dentro ya se sabe que no se debe dejar pasar la información
       res.json(objResponse);
     }
 
-
     if (objResponse.faltantes.length === 0) { // valido
       objResponse.isValid = true;
 
-      const categoriaModelElimnar = await Categoria.findByIdAndDelete({ _id: idCategoria }).exec();
+      const
+        objTareasEliminadas = await Tarea.deleteMany({ categoria: idCategoria }),
+        categoriaModelElimnar = await Categoria.findByIdAndDelete({ _id: idCategoria }).exec();
+
       // console.log('Eliminado?', categoriaModelElimnar);
-      req.flash('messageSuccess', `Categoría <span style="color: #9f0000">${categoriaModelElimnar.categoria}</span> eliminada correctamente`);
+      req.flash('messageSuccess', `Categoría <span style="color: #9f0000">${categoriaModelElimnar.categoria}</span> eliminada junto con <span style="color: #9f0000">${objTareasEliminadas.deletedCount}</span> tareas asociadas`);
       res.json(objResponse);
 
-      // console.log('Elimina?', categoriaModelElimnar); // Si elimina devuelve el objeto eliminado
+      // console.log('Elimina?', categoriaModelElimnar); // Si elimina devuelve el objeto eliminado 
     }
-
 
   } catch (err) {
     console.log('Error', err);
   }
+});
+
+router.post('/eliminar-subcategoria', async (req, res) => {
+
+  const { idCategoria, idSubcategoria } = req.body;
+
+  const objCategoria = await Categoria.findById(idCategoria).lean(); // 1. Busca el documento 'Categoria'
+
+  const arrSubcategorias = objCategoria.subcategoria; //2. Saca el array de las subcategorias de ese documento (pto 1)
+
+  // console.log('categoria', objCategoria);
+  console.log('arr subcategorias en db', arrSubcategorias);
+
+  const nuevoArrSubcategorias = arrSubcategorias.filter(obj => obj._id.toString() !== idSubcategoria);
+
+  console.log('nuevo arr como queda', nuevoArrSubcategorias);
+
+  const
+    filter = { _id: idCategoria },
+    update = { subcategoria: nuevoArrSubcategorias },
+    updateCategoria = await Categoria.findOneAndUpdate(filter, update), // Elimina subcategoria de ese documento 'Categoria'
+    objTareasEliminadas = await Tarea.deleteMany({ subcategoria: idSubcategoria }); // Elimina tareas con esa subcategoria
+
+  req.flash('messageSuccess', `Subcategoría <span style="color: #9f0000">${objCategoria.categoria}</span> eliminada junto con <span style="color: #9f0000">${objTareasEliminadas.deletedCount}</span> tareas asociadas`);
+  res.json(true);
+
 });
 
 router.get('/prueba-flash', async (req, res) => {

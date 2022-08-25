@@ -1,10 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+  cargarLoader();
   const
     selConfigCategoria = document.querySelector('#selConfigCategoria'),
+    tableSubcategorias = document.querySelector('#tableSubcategorias'),
     bodyTableSubcategorias = document.querySelector('#bodyTableSubcategorias'),
     btnEditarCategoria = document.querySelector('#btnEditarCategoria'),
-    btnEliminarCategoria = document.querySelector('#btnEliminarCategoria'),
-    tableSubcategorias = document.querySelector('#tableSubcategorias')
+    btnEliminarCategoria = document.querySelector('#btnEliminarCategoria')
     ;
 
   // rellena ambos select de categorias
@@ -14,54 +15,63 @@ document.addEventListener('DOMContentLoaded', () => {
       res.forEach(obj => {
         selConfigCategoria.innerHTML += `<option value='${obj._id}'>${obj.categoria}</option>`;
       });
+      ocultarLoader();
     });
 
   selConfigCategoria.addEventListener('change', (e) => {
     const idCategoria = e.target.value;
 
-    console.log(idCategoria);
-
     postData('/categoria/get-categoria', { idCategoria })
       .then(res => {
-        console.log(res);
-
         //arma la tabla de subcategorías
         const arrSubcategorias = res.subcategoria;
 
-        bodyTableSubcategorias.innerHTML = '';
+        console.log(arrSubcategorias);
 
-        arrSubcategorias.forEach(subcategoria => {
+        if (arrSubcategorias.length) {
+          bodyTableSubcategorias.innerHTML = '';
 
-          bodyTableSubcategorias.innerHTML += `
+          arrSubcategorias.forEach(subcategoria => {
+
+            bodyTableSubcategorias.innerHTML += `
               <tr>
                 <th scope='row'>${subcategoria.nombre}</th>
-                <td><button type='button' class='btn btn-primary btn_abrir_editor_subcategoria' data-idcat='${res._id}' data-value='${subcategoria.nombre}'>Editar</button></td>
-                <td><button type='button' class='btn btn-primary btn_eliminar_subcategoria' data-idcat='${res._id}' data-nombre='${subcategoria.nombre}'>Eliminar</button></td>
+                <td><button type='button' class='btn btn-primary btn_abrir_editor_subcategoria' data-idcat='${res._id}' data-idsubcat='${subcategoria._id}' data-value='${subcategoria.nombre}'>Editar</button></td>
+                <td><button type='button' class='btn btn-primary btn_eliminar_subcategoria' data-idcat='${res._id}' data-idsubcat='${subcategoria._id}' data-nombre='${subcategoria.nombre}'>Eliminar</button></td>
               </tr>
               `;
-        });
+          });
+        }
 
+        btnEditarCategoria.disabled = false;
+        btnEliminarCategoria.disabled = false;
       });
 
   });
 
   btnEditarCategoria.addEventListener('click', (e) => {
+
+    console.log(selConfigCategoria.options[selConfigCategoria.selectedIndex]);
+    const
+      idCategoria = selConfigCategoria.value,
+      categoriaVieja = selConfigCategoria.options[selConfigCategoria.selectedIndex].text;
+
     Swal.fire({
       title: 'Edita el nombre de la categoría',
       input: 'text',
       inputLabel: '(*￣3￣)╭',
-      inputValue: subcategoriaVieja,
+      inputValue: categoriaVieja,
       showCancelButton: true,
       confirmButtonText: 'Editar',
       cancelButtonText: 'Cancelar',
-      inputValidator: (value) => {
-        if (!value) {
+      inputValidator: (categoriaNueva) => {
+        if (!categoriaNueva) {
           return 'Debes escribir algo!'
         } else {
-          postData('/categoria/editar-subcategoria', { idCategoria, subcategoriaVieja, subcategoriaNueva: value })
+          postData('/categoria/editar-categoria', { idCategoria, categoriaNueva, categoriaVieja })
             .then(res => {
-              console.log(res)
-              ocultarLoader();
+              console.log(res);
+              window.location.href = '';
             });
         }
       }
@@ -70,32 +80,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnEliminarCategoria.addEventListener('click', () => {
 
-    const idCategoria = selConfigCategoria.value;
+    Swal.fire({
+      title: '¿Segura?',
+      html: `Si eliminas la categoria <span class='txt-danger'>${selConfigCategoria.options[selConfigCategoria.selectedIndex].text}</span> se borrarán todas las tareas asociadas a esta`,
+      icon: '',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, borrala!',
+      imageUrl: '/img/5e535aa1d871310896104715_peep-77.svg',
+      imageWidth: 150
+    }).then((result) => {
+      if (result.isConfirmed) {
 
-    postData('/categoria/eliminar-categoria', { idCategoria })
-      .then(res => {
+        cargarLoader();
+        const idCategoria = selConfigCategoria.value;
 
-        if (res.isValid === false) {
+        postData('/categoria/eliminar-categoria', { idCategoria })
+          .then(res => {
 
-          const arrFaltantes = res.faltantes;
-
-          arrFaltantes.forEach(obj => {
-            if (obj.msgs.length) {
-              document.querySelector(obj.idInput).classList.add('inp_invalid'); // colorea el input
-            }
-
-            obj.msgs.forEach(msg => { // rellena los mensajes de error
-              document.querySelector(obj.idFeedback).innerHTML += `${msg}<br>`;
-            })
+            proccessResponse({
+              res,
+              inCaseValid: () => { window.location.href = '' }
+            });
           });
-        }
+      }
+    });
 
-        if (res.isValid) {
-          window.location.href = '';
-        }
 
-        ocultarLoader();
-      });
   });
 
   // * listeners de los botones que estan en la tabla de subcategorias (editar y eliminar)
@@ -106,7 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const
         btn = e.target,
         idCategoria = btn.getAttribute('data-idcat'),
+        idSubcategoria = btn.getAttribute('data-idsubcat'),
         subcategoriaVieja = btn.getAttribute('data-value');
+
 
       Swal.fire({
         title: 'Edita el nombre de la subcategoría',
@@ -116,18 +131,19 @@ document.addEventListener('DOMContentLoaded', () => {
         showCancelButton: true,
         confirmButtonText: 'Editar',
         cancelButtonText: 'Cancelar',
-        inputValidator: (value) => {
-          if (!value) {
+        inputValidator: (subcategoriaNueva) => {
+          if (!subcategoriaNueva) {
             return 'Debes escribir algo!'
           } else {
-            // creo que esto de naranja ya está xD, REVISAR
-            // TODO, si se actualizan las categorias o subcategorías aquí, se deberían actualizar las de todos las tareas creadas?
-            // TODO, creo que es mejor en vez de guardar las categorías o subcategorias, guardar es el id
-            // TODO, así que en vez de traer en nombre en si se trae es el id 
-            postData('/categoria/editar-subcategoria', { idCategoria, subcategoriaVieja, subcategoriaNueva: value })
+            postData('/categoria/editar-subcategoria', { idCategoria, subcategoriaVieja, subcategoriaNueva })
               .then(res => {
-                console.log(res)
-                ocultarLoader();
+                console.log(res);
+                selConfigCategoria.dispatchEvent(new Event('change'));
+                selConfigCategoria.value = idCategoria;
+                Toast.fire({
+                  icon: 'success',
+                  title: `Nombre de subcategoría actualizado de <span style="color: #9f0000">${subcategoriaVieja}</span> a <span style="color: #42A9DF">${subcategoriaNueva}</span>`,
+                });
               });
           }
         }
@@ -139,9 +155,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const
         btn = e.target,
         idCategoria = btn.getAttribute('data-idcat'),
+        idSubcategoria = btn.getAttribute('data-idsubcat'),
         nombreSubCat = btn.getAttribute('data-nombre');
 
-      console.log(idCategoria);
+      // console.log(idCategoria);
+      // console.log('subcate', idSubcategoria);
 
       Swal.fire({
         title: '¿Segura?',
@@ -157,18 +175,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }).then((result) => {
         if (result.isConfirmed) {
 
-          // postData('/tarea/eliminar', { idTarea })
-          //   .then(res => {
-          //     console.log(res);
-
-          //     if (res) {
-          //       console.log(target.parentElement.parentElement);
-          //       target.parentElement.parentElement.classList.add('animate__bounceOutLeft'); // apunta a la 'card'
-          //       setTimeout(() => {
-          //         window.location.href = `/tarea/lista/${nPagActual}`
-          //       }, 500);
-          //     }
-          //   });
+          postData('/categoria/eliminar-subcategoria', { idCategoria, idSubcategoria })
+            .then(res => {
+              console.log(res);
+              window.location.href = '';
+            });
         }
       });
     }

@@ -105,4 +105,8 @@ El comando build del package.json lo que hace el convertir mi proyecto en algo q
 https://pumpkin-juice.herokuapp.com/tarea/informe
 
 NOTA: Heroku ya está enlazado con mi github, ya solo es hacer los push y allá en heroku se reciven automaticamente.
+
+Al hacer push Heroku automaticamente se actualiza
+La carpeta dist está en el ignore ya que Heroku automaticamente hace el build
+
 Para que se reciban los cambios al parecer hay que meterese al apartado deploy de la app y en la parte de abajo darle en "Deploy Branch"

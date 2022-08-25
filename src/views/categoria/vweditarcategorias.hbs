@@ -15,14 +15,16 @@
 
           {{! Si le dan editar se cambian todas los nombres de categorias que tengan las tareas por el nuevo nombre de categoria que le pongan }}
           {{! Si le dan editar se cambian todas los nombres de categorias que tengan las subcategorias por el nuevo nombre de categoria que le pongan }}
-          <button id='btnEditarCategoria' type='button' class='btn btn-primary'>Editar</button>
+          <button id='btnEditarCategoria' type='button' class='btn btn-primary' disabled>Editar</button>
           {{! Se elimina la categoria con todas sus subcategorias }}
-          <button id='btnEliminarCategoria' type='button' class='btn btn-primary'>Eliminar</button>
+          <button id='btnEliminarCategoria' type='button' class='btn btn-primary' disabled>Eliminar</button>
 
           {{! Si le pongo un botón de eliminar que pasa con las tareas que tengan esta categoría? }}
         </form>
 
         <h3>Listado de subcategorias</h3>
+        {{! TODO que se pueda agregar subcategorias desde este apartado }}
+        <button onclick='alert("Funcion no disponible por el momento")'>Agregar subcategoria</button>
         <table id='tableSubcategorias' class='table'>
           <thead>
             <tr>

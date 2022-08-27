@@ -28,8 +28,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log(arrSubcategorias);
 
+        bodyTableSubcategorias.innerHTML = '';
+
         if (arrSubcategorias.length) {
-          bodyTableSubcategorias.innerHTML = '';
 
           arrSubcategorias.forEach(subcategoria => {
 

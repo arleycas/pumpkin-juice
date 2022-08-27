@@ -91,7 +91,7 @@ function cleanFeedbacks() {
 
 function proccessResponse(data) {
 
-  const { res, inCaseValid } = data;
+  const { res } = data;
 
   if (res.isValid === false) {
 
@@ -109,7 +109,9 @@ function proccessResponse(data) {
   }
 
   if (res.isValid) {
-    inCaseValid();
+    if (data.hasOwnProperty('inCaseValid')) {
+      data.inCaseValid();
+    }
   }
 }
 

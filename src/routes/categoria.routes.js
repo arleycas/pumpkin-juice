@@ -221,6 +221,25 @@ router.post('/get-categoria', async (req, res) => {
   }
 });
 
+router.post('/get-categoria-all', async (req, res) => {
+  let { categoria } = req.body;
+  categoria = categoria.trim();
+  // console.log(req.body.idCategoria);
+  try {
+
+    if (categoria) {
+      const arrObjCategoria = await Categoria.find({ categoria: { $regex: categoria, $options: 'i' } }).limit(5).lean(); // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
+      res.json(arrObjCategoria);
+      return;
+    }
+
+    res.json(false);
+
+  } catch (error) {
+    console.log('Error', error);
+  }
+});
+
 router.post('/eliminar-categoria', async (req, res) => {
 
   try {

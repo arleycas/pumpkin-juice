@@ -106,7 +106,7 @@ https://pumpkin-juice.herokuapp.com/tarea/informe
 
 NOTA: Heroku ya está enlazado con mi github, ya solo es hacer los push y allá en heroku se reciven automaticamente.
 
-Al hacer push Heroku automaticamente se actualiza
+Al hacer push Heroku automaticamente se actualiza (ojo, los cambios no son tan inmediatos, darle 1 o 2 minutos xD)
 La carpeta dist está en el ignore ya que Heroku automaticamente hace el build
 
 Para que se reciban los cambios al parecer hay que meterese al apartado deploy de la app y en la parte de abajo darle en "Deploy Branch"

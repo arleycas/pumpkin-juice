@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const
     inpIdTarea = document.querySelector('#inpIdTarea'),
-    inpDescripción = document.querySelector('#inpDescripción'),
+    inpDescripcion = document.querySelector('#inpDescripcion'),
     selEstado = document.querySelector('#selEstado'),
     inpFechaDesde = document.querySelector('#inpFechaDesde'),
     inpFechaHasta = document.querySelector('#inpFechaHasta'),
@@ -21,9 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fechaDesde = res.desdeHasta[0] ? res.desdeHasta[0].split('T')[0] : '',
         fechaHasta = res.desdeHasta[1] ? res.desdeHasta[1].split('T')[0] : '',
         idCategoria = res.categoria,
-        subcategoria = res.subcategoria;
+        idSubcategoria = res.subcategoria;
 
-      inpDescripción.value = descripcion;
+      inpDescripcion.value = descripcion;
       selEstado.value = estado;
       inpFechaDesde.value = fechaDesde;
       inpFechaHasta.value = fechaHasta;
@@ -34,14 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
         fechaDesde,
         fechaHasta,
         idCategoria,
-        subcategoria
+        idSubcategoria
       }
-
-      const arrObjData = Object.keys(objDataOriginal);
-
-      // arrObjData.forEach(key => {
-      //   console.log(key);
-      // });
 
       // rellena ambos select de categorias
       getData('/categoria/get-all')
@@ -54,22 +48,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
           postData('/categoria/get-categoria', { idCategoria })
             .then(res => {
-              // console.log(res);
-              const arrSubcategorias = res.subcategoria;
+              console.log('esto traigoo', res);
 
-              arrSubcategorias.forEach(elem => {
-                selSubcategoria.innerHTML += `<option value='${elem._id}'>${elem.nombre}</option>`
-              });
+              if (res) {
+                const arrSubcategorias = res.subcategoria;
 
-              selSubcategoria.value = subcategoria;
+                arrSubcategorias.forEach(elem => {
+                  selSubcategoria.innerHTML += `<option value='${elem._id}'>${elem.nombre}</option>`
+                });
+
+                selSubcategoria.value = idSubcategoria;
+              }
             });
 
         });
 
       // formato que acepta input de fecha: '2022-04-12'
     });
-
-
 
   selCategoria.addEventListener('change', (e) => {
     const idCategoria = e.target.value;
@@ -87,38 +82,40 @@ document.addEventListener('DOMContentLoaded', () => {
       });
   });
 
-  btnEditar.addEventListener('click', () => {
+  btnEditar.addEventListener('click', (e) => {
 
     const objDataNueva = {
-      descripcion: inpDescripción.value,
+      descripcion: inpDescripcion.value,
       estado: selEstado.value,
       fechaDesde: inpFechaDesde.value,
       fechaHasta: inpFechaHasta.value,
-      categoria: selCategoria.value,
-      subcategoria: selSubcategoria.value,
+      idCategoria: selCategoria.value,
+      idSubcategoria: selSubcategoria.value,
     }
 
-    const arrObjData = Object.keys(objDataOriginal);
-    let objDataEnviar = { idTarea: inpIdTarea.value }
+    // TODO, esto deberia ir en el backend
+    // const arrObjData = Object.keys(objDataOriginal);
+    // arrObjData.forEach(key => {
+    //   if (objDataOriginal[key] !== objDataNueva[key]) {
+    //     objDataEnviar[key] = objDataNueva[key]
+    //   }
+    // });
 
-    arrObjData.forEach(key => {
-      if (objDataOriginal[key] !== objDataNueva[key]) {
-        objDataEnviar[key] = objDataNueva[key]
-      }
-    });
-
-    console.log('Se enviará', objDataEnviar);
-
-    postData('/tarea/editar', objDataEnviar)
+    postData('/tarea/editar', { idTarea: inpIdTarea.value, objDataOriginal, objDataNueva })
       .then(res => {
         console.log(res);
 
-        if (res) {
-          Toast.fire({
-            icon: 'success',
-            title: `Tarea actualizada!`,
-          });
-        }
+        proccessResponse({
+          res,
+          inCaseValid: () => { window.location.href = '' }
+        });
+
+        // if (res) {
+        //   Toast.fire({
+        //     icon: 'success',
+        //     title: `Tarea actualizada!`,
+        //   });
+        // }
       });
   });
 

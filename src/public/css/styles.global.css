@@ -6,6 +6,10 @@
   display: none;
 }
 
+.display_flex {
+  display: flex;
+}
+
 .txt-danger {
   font-weight: bold;
   font-size: 1.2rem;
@@ -15,4 +19,40 @@
 .footer {
   padding: 1rem;
   text-align: center;
+}
+
+.option_list_box {
+  border: 1px solid;
+  border-radius: .375rem 0.75rem;
+  overflow: hidden;
+}
+
+.option_item{
+  padding: .5rem;
+  display: block;
+}
+
+.option_item:hover {
+  background-color: aquamarine;
+  cursor: pointer;
+}
+
+/** FORMS */
+
+.inp_x {
+  border-right: none;
+}
+
+.btn_input_x {
+  border: 1px solid #ced4da;
+  border-left: none;
+  color: #000;
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+.btn_input_x:hover {
+  background-color: transparent;
+  color: #000;
+  border-color: #ced4da;
 }

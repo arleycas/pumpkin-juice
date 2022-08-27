@@ -2,6 +2,7 @@ import { Router } from 'express';
 import Tarea from '../models/Tarea';
 import Categoria from '../models/Categoria';
 import { crearTarea } from '../controllers/tareas.controller';
+import Commons from './func/commons';
 
 const router = Router();
 
@@ -150,20 +151,89 @@ router.post('/getTarea', async (req, res) => {
 router.post('/agregar', crearTarea);
 
 router.post('/editar', async (req, res) => {
-  // console.log(req.body);
-  const { idTarea } = req.body;
+  const { idTarea, objDataOriginal, objDataNueva } = req.body;
 
   try {
-    const tarea = await Tarea.findByIdAndUpdate(idTarea, req.body);
 
-    const arrObjTareas = await Tarea.find().lean();
+    let objResponse = Commons.validateDataBackend({
+      descripcion: {
+        campo: 'Descripción',
+        valor: objDataNueva.descripcion,
+        obli: true, // para ya no mandarlo desde el front
+        idElem: '#inpDescripcion', // para ya no mardarlo desde el front
+        idFeedback: '#feedBackDescripcion',
+        validations: ['empty']
+      },
+      estado: {
+        campo: 'Estado',
+        valor: objDataNueva.estado,
+        obli: true, // para ya no mandarlo desde el front
+        idElem: '#selEstado', // para ya no mardarlo desde el front
+        idFeedback: '#feedBackEstado',
+        validations: ['empty']
+      },
+      fechaDesde: {
+        campo: 'Fecha desde',
+        valor: objDataNueva.fechaDesde,
+        obli: true, // para ya no mandarlo desde el front
+        idElem: '#inpFechaDesde', // para ya no mardarlo desde el front
+        idFeedback: '#feedBackFechaDesde',
+        validations: ['empty']
+      },
+      fechaHasta: {
+        campo: 'Fecha hasta',
+        valor: objDataNueva.fechaHasta,
+        obli: true, // para ya no mandarlo desde el front
+        idElem: '#inpFechaHasta', // para ya no mardarlo desde el front
+        idFeedback: '#feedBackFechaHasta',
+        validations: ['empty']
+      },
+      idCategoria: {
+        campo: 'Categoría',
+        valor: objDataNueva.idCategoria,
+        obli: true, // para ya no mandarlo desde el front
+        idElem: '#selCategoria', // para ya no mardarlo desde el front
+        idFeedback: '#feedBackCategoria',
+        validations: ['empty']
+      },
+      idSubcategoria: {
+        campo: 'Subcategoría',
+        valor: objDataNueva.idSubcategoria,
+        obli: true, // para ya no mandarlo desde el front
+        idElem: '#selSubcategoria', // para ya no mardarlo desde el front
+        idFeedback: '#feedBackSubcategoria',
+        validations: ['empty']
+      },
+    });
 
-    console.log(arrObjTareas); // TODO, como hacer render? no funciona
+    if (objResponse.faltantes.length) {
+      objResponse.isValid = false; // en realidad este no es tan necesario, ya que si objResponse.faltantes tiene algun objeto dentro ya se sabe que no se debe dejar pasar la información
+      res.json(objResponse);
+    }
 
-    res.json({ done: true });
-    // const tareaGuardada = await tarea.updateOne({ _id: req.body.idTarea }, { descripcion: req.body.descripcion, estado: req.body.estado });
+    if (objResponse.faltantes.length === 0) { // valido
+      objResponse.isValid = true;
+      console.log('Tarea nueva', objDataNueva);
 
-    // console.log(tareaGuardada);
+      const
+        objUpdate = {
+          descripcion: objDataNueva.descripcion,
+          estado: objDataNueva.estado,
+          desdeHasta: [objDataNueva.fechaDesde, objDataNueva.fechaHasta],
+          categoria: objDataNueva.idCategoria,
+          subcategoria: objDataNueva.idSubcategoria
+        },
+        tarea = await Tarea.findByIdAndUpdate(idTarea, objUpdate);
+
+      // const arrObjTareas = await Tarea.find().lean();
+
+      console.log(tarea);
+
+      req.flash('messageSuccess', `Tarea actualizada correctamente`);
+      res.json(objResponse);
+      // const tareaGuardada = await tarea.updateOne({ _id: req.body.idTarea }, { descripcion: req.body.descripcion, estado: req.body.estado });
+      // console.log(tareaGuardada);
+    }
 
   } catch (err) {
     console.log('Error', err);

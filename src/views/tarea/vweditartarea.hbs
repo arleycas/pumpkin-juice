@@ -2,26 +2,32 @@
 
 <input id='inpIdTarea' type='text' value='{{objTarea._id}}' />
 
-<input id='inpDescripción' type='text' />
+<input id='inpDescripcion' type='text' />
+<div id='feedBackDescripcion' class='feedback_box'></div>
 
 <select id='selEstado' class='form-select' aria-label='Default select example'>
-  <option selected>Selecciona estado</option>
+  <option selected value='' disabled>Selecciona estado</option>
   <option value='Doing'>Doing</option>
   <option value='To Do'>To Do</option>
   <option value='Done'>Done</option>
 </select>
+<div id='feedBackEstado' class='feedback_box'></div>
 
 <input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
+<div id='feedBackFechaDesde' class='feedback_box'></div>
+
 <input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
+<div id='feedBackFechaHasta' class='feedback_box'></div>
 
 <select id='selCategoria' class='form-select' aria-label='Default select example'>
-  <option selected>Selecciona categoria</option>
-
+  <option selected value='' disabled>Selecciona categoria</option>
 </select>
+<div id='feedBackCategoria' class='feedback_box'></div>
+
 <select id='selSubcategoria' class='form-select' aria-label='Default select example'>
-  <option selected>Selecciona subcategoria</option>
-
+  <option selected value='' disabled>Selecciona subcategoria</option>
 </select>
+<div id='feedBackSubcategoria' class='feedback_box'></div>
 
 <button id='btnEditar' type='button' class='btn btn-primary'>Editar</button>
 

@@ -1,7 +1,6 @@
 const Commons = {};
 
 Commons.isEmpty = (val) => {
-
   if (val.length < 1) return true;
   if (val === null) return true;
   if (val === undefined) return true;
@@ -12,6 +11,7 @@ Commons.isEmpty = (val) => {
 Commons.validateDataBackend = (objRevision) => {
 
   let objResponse = { isValid: true, faltantes: [] };
+  console.log('objRevision', objRevision);
 
   // 1. se recorre cada obj del obj revisión (cada objeto representa un elemento de formulario)
   for (const property in objRevision) {

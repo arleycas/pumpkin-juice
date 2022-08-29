@@ -1,42 +1,47 @@
 <h1>VISTA TAREAS <i class='bx bxs-notepad'></i></h1>
 
-<div class='container'>
-  <div class='row'>
+{{#if hayTareas}}
+  <div class='container'>
+    <div class='row'>
 
-    {{#each arrObjData}}
+      {{#each arrObjData}}
 
-      <div class='col-6'>
-        <div class='card animate__animated'>
-          <div class='card-body'>
+        <div class='col-6'>
+          <div class='card animate__animated'>
+            <div class='card-body'>
 
-            <p id='des{{this._id}}'>{{this.descripcion}}</p>
-            <p id='est{{this._id}}'>{{this.estado}}</p>
-            <p><b>Categoria:</b> <span id='cat{{this._id}}'>{{this.categoria}}</span></p>
-            <p><b>Subcategoria:</b> <span id='sub{{this._id}}'>{{this.subcategoria}}</span></p>
-            <a href='/tarea/editar/{{this._id}}' class='btn btn-primary' tabindex='-1' role='button'>Editar</a>
-            <button data-id='{{this._id}}' type='button' class='btn btn-primary btn_eliminar_tarea'><i class='bx bxs-trash-alt'></i></button>
+              <p id='des{{this._id}}'>{{this.descripcion}}</p>
+              <p id='est{{this._id}}'>{{this.estado}}</p>
+              <p><b>Categoria:</b> <span id='cat{{this._id}}'>{{this.categoria}}</span></p>
+              <p><b>Subcategoria:</b> <span id='sub{{this._id}}'>{{this.subcategoria}}</span></p>
+              <a href='/tarea/editar/{{this._id}}' class='btn btn-primary' tabindex='-1' role='button'>Editar</a>
+              <button data-id='{{this._id}}' type='button' class='btn btn-primary btn_eliminar_tarea'><i class='bx bxs-trash-alt'></i></button>
+            </div>
           </div>
         </div>
-      </div>
-    {{/each}}
-  </div>
-</div>
+      {{/each}}
 
-<div class='container'>
-  <div class='d-flex justify-content-center'>
-    <nav aria-label='Page navigation example'>
-      <ul class='pagination'>
-        <li id='btnBackPag' class='page-item'>
-          <a class='page-link' href='#' tabindex='-1' aria-disabled='true'><i class='bx bx-chevron-left' style='font-size: 1.5rem'></i></a>
-        </li>
-        {{#each arrPaginacion}}
-          <li id='pag{{this}}' class='page-item page-item-num'><a class='page-link' href='/tarea/lista/{{this}}'>{{this}}</a></li>
-        {{/each}}
-        <li id='btnNextPag' class='page-item'><a class='page-link' href='#'><i class='bx bx-chevron-right' style='font-size: 1.5rem'></i></a></li>
-      </ul>
-    </nav>
+    </div>
   </div>
 
-</div>
+  <div class='container'>
+    <div class='d-flex justify-content-center'>
+      <nav aria-label='Page navigation example'>
+        <ul class='pagination'>
+          <li id='btnBackPag' class='page-item'>
+            <a class='page-link' href='#' tabindex='-1' aria-disabled='true'><i class='bx bx-chevron-left' style='font-size: 1.5rem'></i></a>
+          </li>
+          {{#each arrPaginacion}}
+            <li id='pag{{this}}' class='page-item page-item-num'><a class='page-link' href='/tarea/lista/{{this}}'>{{this}}</a></li>
+          {{/each}}
+          <li id='btnNextPag' class='page-item'><a class='page-link' href='#'><i class='bx bx-chevron-right' style='font-size: 1.5rem'></i></a></li>
+        </ul>
+      </nav>
+    </div>
 
-<script src='/js/vwlistatareas.js'></script>
+  </div>
+  <script src='/js/vwlistatareas.js'></script>
+
+{{else}}
+  No hay tareas pe
+{{/if}}

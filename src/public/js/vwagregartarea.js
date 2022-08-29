@@ -42,28 +42,11 @@ document.addEventListener('DOMContentLoaded', () => {
     postData('/tarea/agregar', { descripcion: inpDescripcion.value, estado: 'Doing', desdeHasta: [inpFechaDesde.value, inpFechaHasta.value], categoria: selCategoria.value, subcategoria: selSubcategoria.value })
       .then(res => {
 
-        // todo, esto puede ser una función global
-        if (res.isValid === false) {
-
-          const arrFaltantes = res.faltantes;
-
-          arrFaltantes.forEach(obj => {
-            if (obj.msgs.length) {
-              document.querySelector(obj.idInput).classList.add('inp_invalid'); // colorea el input
-            }
-
-            obj.msgs.forEach(msg => { // rellena los mensajes de error
-              document.querySelector(obj.idFeedback).innerHTML += `${msg}<br>`;
-            })
-          });
-        }
-
-        if (res.isValid) {
-          window.location.href = '';
-        }
-
-        ocultarLoader();
-
+        proccessResponse({
+          res, inCaseValid: () => {
+            window.location.href = '/tarea/lista/1';
+          }
+        })
       });
   });
 

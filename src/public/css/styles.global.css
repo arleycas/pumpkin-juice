@@ -25,6 +25,11 @@
   border: 1px solid;
   border-radius: .375rem 0.75rem;
   overflow: hidden;
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  background-color: white;
+  z-index: 10;
 }
 
 .option_item{
@@ -35,6 +40,10 @@
 .option_item:hover {
   background-color: aquamarine;
   cursor: pointer;
+}
+
+.item_selected {
+  background-color: aquamarine;
 }
 
 /** FORMS */

@@ -2,22 +2,24 @@
 
 <div class='container'>
   <div class='row justify-content-md-center'>
+
     <div class='col col-sm-12 col-md-6'>
       <div class='card p-3'>
         <form action=''>
           <label for='inpNuevaCategoria' class='form-label'>Agregar nueva categoria</label>
           <div class='input-group'>
-            <input id='inpNuevaCategoria' type='input' class='form-control inp_x' placeholder='Agregar nueva categoria' autocomplete='off' />
+            <input id='inpNuevaCategoria' data-idcat='' type='input' class='form-control inp_x' placeholder='Agregar nueva categoria' autocomplete='off' />
+            {{! <div id='optionsList' class='option_list_box display_none'></div> }}
             <button class='btn btn-outline-secondary btn_input_x' type='button' id='btnClearInpNuevaCategoria'><i class='bx bx-x'></i></button>
           </div>
           <div id='feedBackNuevaCategoria' class='feedback_box'></div>
 
-          <div id='optionsList' class='option_list_box display_none'></div>
-
           <label for='inpNuevaSubcategoria' class='form-label'>Agregar nueva subcategoria</label>
-          <input id='inpNuevaSubcategoria' type='input' class='form-control' placeholder='Agregar nueva subcategoria' autocomplete='off' />
+          <div class='input-group'>
+            <input id='inpNuevaSubcategoria' type='input' class='form-control inp_x' placeholder='Agregar nueva subcategoria' autocomplete='off' />
+            <button class='btn btn-outline-secondary btn_input_x' type='button' id='btnClearInpNuevaSubcategoria'><i class='bx bx-x'></i></button>
+          </div>
           <div id='feedBackNuevaSubcategoria' class='feedback_box'></div>
-          <p>Bloquear este input hasta que se seleccione el de categoria</p>
 
           <button id='btnAgregarCategoria' type='button' class='btn btn-primary'>Agregar</button>
 
@@ -27,6 +29,4 @@
   </div>
 </div>
 
-<a href='/categoria/prueba-flash'>Oprimemesta</a>
-
-<script src='/js/vwagregarcategoria.js'></script>
+<script src='/js/categoria/vwagregarcategoria.js'></script>

@@ -146,8 +146,7 @@ router.get('/editar/:idTarea', async (req, res) => {
 router.post('/getTarea', async (req, res) => {
   const { idTarea } = req.body;
 
-  console.log('idTareaaaa', idTarea);
-
+  // console.log('idTareaaaa', idTarea);
   try {
     const tarea = await Tarea.findById(idTarea).lean(); // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
     // con exec, trae el objeto ese de mongoose

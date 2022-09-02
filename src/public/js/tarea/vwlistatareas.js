@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   // let myModal = new bootstrap.Modal(document.querySelector('#modalEditarTarea'), options)
   const
+    contCardTareas = document.querySelector('#contCardTareas'),
     btnBackPag = document.querySelector('#btnBackPag'),
     btnNextPag = document.querySelector('#btnNextPag');
   let nPagActual = 1;
@@ -34,9 +35,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  document.querySelectorAll('.btn_eliminar_tarea').forEach(btn => {
+  contCardTareas.addEventListener('click', (e) => {
 
-    btn.addEventListener('click', (e) => {
+    if (e.target && e.target.classList.contains('btn_eliminar_tarea')) {
+      e.stopPropagation();
+
       const
         target = e.target.tagName.toLowerCase() === 'button' ? e.target : e.target.parentElement,
         idTarea = target.getAttribute('data-id');
@@ -49,12 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
         text: "Se perderá la tarea por siempre",
         icon: '',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3c4d5e',
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Si, borrala!',
         imageUrl: '/img/5e535aa1d871310896104715_peep-77.svg',
-        imageWidth: 150
+        imageWidth: 150,
+        focusCancel: true
       }).then((result) => {
         if (result.isConfirmed) {
 
@@ -73,10 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
 
-    });
+    }
+
+    // ** en caso de que le den click al icono dentro de botón eliminar
+    if (e.target && e.target.tagName === 'I') {
+      const padre = e.target.parentElement;
+      if (padre.classList.contains('btn_eliminar_tarea')) {
+        padre.click();
+      }
+    }
   });
-
-
 
 
 });

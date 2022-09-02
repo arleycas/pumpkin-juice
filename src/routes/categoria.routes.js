@@ -229,6 +229,16 @@ router.post('/get-categoria-all', async (req, res) => {
 
     if (categoria) {
       const arrObjCategoria = await Categoria.find({ categoria: { $regex: categoria, $options: 'i' } }).limit(5).lean(); // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
+
+      // const borrar = await Categoria.find({
+      //   subcategoria: {
+      //     $elemMatch: {
+      //       nombre: 'capacitación de habilidades blandas'
+      //     }
+      //   }
+      // }).limit(1);
+      // console.log('aver', borrar);
+
       res.json(arrObjCategoria);
       return;
     }

@@ -40,8 +40,12 @@
       </div>
     </div>
 
+
     {{> navbar }}
     {{> flashmessages }}
+    
+    {{!-- Esto es solo para hacer "console.log" cuando esté en el celular --}}
+    <p id="mobilConsole" class="mobil_console display_none"></p>
 
     {{! Según lo que entendí (corregir si no es así) 
       El usuario al entrar al aplicativo SIEMPRE va a entrar a main.hbs, pero al ejecutar una ruta render ej: render('vistaTal')

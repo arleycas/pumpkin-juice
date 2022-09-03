@@ -29,7 +29,7 @@
   top: 100%;
   width: 100%;
   background-color: white;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .option_item{
@@ -64,4 +64,12 @@
   background-color: transparent;
   color: #000;
   border-color: #ced4da;
+}
+
+.mobil_console {
+  background-color: #000;
+  color: #64cd04;
+  padding: 1rem;
+  font-family: consolas;
+  margin: 1rem;
 }

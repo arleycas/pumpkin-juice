@@ -59,45 +59,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (data.hasOwnProperty(validar) === false) { validar = true; }
 
-      input.addEventListener('keyup', (e) => {
+      if (window.isMobileOrTablet()) { // Es celular o tablet
+        input.addEventListener('input', (e) => {
 
-        const
-          keyCode = e.code, // codigo (no es numero)
-          keyWich = e.which, // numero
-          valorInput = e.target.value;
+          // window.consoleMobile(`${e.inputType}`);
 
-        // * se activa solo cuando sean teclas alfa-numéricas
-        if ((keyWich >= 48 && keyWich <= 90) || keyCode === 'Backspace' || keyCode === 'Space') {
-
-          if (validar) {
-            callbackPeticion();
-          }
-        }
-
-        // * captura cuando sean las teclas arrowUp/Down
-        if (keyCode === 'ArrowUp' || keyCode === 'ArrowDown') {
-
-          if (input.nextElementSibling.classList.contains('option_list_box')) { // valida si lo que hay next to el input es una lista de opciones
-            const
-              itemsList = input.nextElementSibling.querySelectorAll('.option_item'), // nextsibling, siempre va a a ser la lista de opciones
-              ultimaPositionItem = itemsList.length - 1;
-            let
-              itemSelected = [...itemsList].filter(item => item.classList.contains('item_selected'))[0], // devuelve array con el span seleccionado (por eso el [0] ya que siempre va a ser 1), si devuelve vacio es porque no hay ninguno seleccionado
-              nextItem = this.getItemList({ keyCode, itemSelected, ultimaPositionItem, itemsList });
-
-            itemsList.forEach(item => item.classList.remove('item_selected'));
-            nextItem.classList.add('item_selected');
+          if (e.isTrusted && e.inputType === 'insertCompositionText' || e.inputType === 'insertText') {
+            if (validar) { callbackPeticion() }
           }
 
-        }
+        });
+      }
 
-        if (keyCode === 'Enter') {
-          const itemSelected = input.nextElementSibling.querySelectorAll('.item_selected')[0]; // nextsibling, siempre va a a ser la lista de opciones
-          input.setAttribute('data-idcat', itemSelected.getAttribute('data-idcat'));
-          input.value = itemSelected.innerHTML.trim();
-          this.deleteList(input);
-        }
-      });
+      if (window.isMobileOrTablet() === false) { // Es PC
+
+        input.addEventListener('keyup', (e) => {
+
+          // * NOTA: Los eventos keys, no funcionan en mobile (Y_Y) ya que los keyborard de los celulares no son realmente teclados
+          // * hay que usar la alternativa de evento 'textInput' y obtener solo el caracter
+
+          const
+            keyCode = e.code, // codigo (no es numero)
+            keyWich = e.which, // numero
+            valorInput = e.target.value;
+
+          // * se activa solo cuando sean teclas alfa-numéricas [ Solo funciona en pc ]
+          if ((keyWich >= 48 && keyWich <= 90) || keyCode === 'Backspace' || keyCode === 'Space') {
+
+            if (validar) { callbackPeticion() }
+          }
+
+          // * captura cuando sean las teclas arrowUp/Down [ Solo funciona en pc ]
+          if (keyCode === 'ArrowUp' || keyCode === 'ArrowDown') {
+
+            if (input.nextElementSibling.classList.contains('option_list_box')) { // valida si lo que hay next to el input es una lista de opciones
+              const
+                itemsList = input.nextElementSibling.querySelectorAll('.option_item'), // nextsibling, siempre va a a ser la lista de opciones
+                ultimaPositionItem = itemsList.length - 1;
+              let
+                itemSelected = [...itemsList].filter(item => item.classList.contains('item_selected'))[0], // devuelve array con el span seleccionado (por eso el [0] ya que siempre va a ser 1), si devuelve vacio es porque no hay ninguno seleccionado
+                nextItem = this.getItemList({ keyCode, itemSelected, ultimaPositionItem, itemsList });
+
+              itemsList.forEach(item => item.classList.remove('item_selected'));
+              nextItem.classList.add('item_selected');
+            }
+
+          }
+
+          if (keyCode === 'Enter') {
+            const itemSelected = input.nextElementSibling.querySelectorAll('.item_selected')[0]; // nextsibling, siempre va a a ser la lista de opciones
+            input.setAttribute('data-idcat', itemSelected.getAttribute('data-idcat'));
+            input.value = itemSelected.innerHTML.trim();
+            this.deleteList(input);
+          }
+        });
+      }
+
 
     }
   }
@@ -105,12 +122,15 @@ document.addEventListener('DOMContentLoaded', () => {
   InputList.initInput({
     input: inpNuevaCategoria,
     callbackPeticion: () => {
-      postData('/categoria/get-categoria-all', { categoria: inpNuevaCategoria.value.trim() })
+      postData('/categoria/get-categoria-all', { categoria: inpNuevaCategoria.value.trim().toLowerCase() })
         .then(res => {
           // console.log(res);
           if (res) {
             inpNuevaCategoria.setAttribute('data-idcat', '');
             InputList.deleteList(inpNuevaCategoria);
+
+
+
             InputList.createList({
               input: inpNuevaCategoria,
               arrObjetos: res,
@@ -145,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
               const
                 arrSubcategorias = res.subcategoria,
-                arrObjResult = arrSubcategorias.filter(obj => obj.nombre.includes(inpNuevaSubcategoria.value.trim()))
+                arrObjResult = arrSubcategorias.filter(obj => obj.nombre.includes(inpNuevaSubcategoria.value.trim().toLowerCase()))
 
               InputList.createList({
                 input: inpNuevaSubcategoria,
@@ -166,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
       }
 
-      if (!inpNuevaSubcategoria.value) {
+      if (!inpNuevaSubcategoria.value.trim()) {
         InputList.deleteList(inpNuevaSubcategoria);
       }
 

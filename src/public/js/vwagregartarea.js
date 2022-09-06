@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inpDescripcion = document.querySelector('#inpDescripcion'),
     selCategoria = document.querySelector('#selCategoria'),
     selSubcategoria = document.querySelector('#selSubcategoria'),
+    selEstado = document.querySelector('#selEstado'),
     inpFechaDesde = document.querySelector('#inpFechaDesde'),
     inpFechaHasta = document.querySelector('#inpFechaHasta'),
     btnNuevaTarea = document.querySelector('#btnNuevaTarea')
@@ -37,21 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
   btnNuevaTarea.addEventListener('click', (e) => {
     cargarLoader();
     cleanFeedbacks();
-
-    console.log({ descripcion: inpDescripcion.value, estado: 'Doing', desdeHasta: [inpFechaDesde.value, inpFechaHasta.value], categoria: selCategoria.value, subcategoria: selSubcategoria.value });
-    postData('/tarea/agregar', { descripcion: inpDescripcion.value, estado: 'Doing', desdeHasta: [inpFechaDesde.value, inpFechaHasta.value], categoria: selCategoria.value, subcategoria: selSubcategoria.value })
+    postData('/tarea/agregar', { descripcion: inpDescripcion.value, estado: selEstado.value, desdeHasta: [inpFechaDesde.value, inpFechaHasta.value], categoria: selCategoria.value, subcategoria: selSubcategoria.value })
       .then(res => {
 
         proccessResponse({
           res, inCaseValid: () => {
             window.location.href = '/tarea/lista/1';
           }
-        })
+        });
+
+        ocultarLoader();
+
       });
   });
-
-  ocultarLoader();
-
-
-
 });

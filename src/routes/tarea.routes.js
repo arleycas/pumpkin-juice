@@ -86,7 +86,9 @@ router.get('/lista/:pag', async (req, res) => {
           descripcion: obj.descripcion,
           estado: obj.estado,
           categoria: objCategoria ? objCategoria.categoria : 'No existe categoría',
-          subcategoria: objCategoria ? getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea }) : 'No existe subcategoria'
+          subcategoria: objCategoria ? getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea }) : 'No existe subcategoria',
+          fechaDesde: Commons.beautyDate(obj.desdeHasta[0]),
+          fechaHasta: Commons.beautyDate(obj.desdeHasta[1])
         });
 
 

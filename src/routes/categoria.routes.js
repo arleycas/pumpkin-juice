@@ -13,7 +13,7 @@ router.get('/agregar', async (req, res) => {
   try {
     res.render('categoria/vwagregarcategoria', { objTarea: 'tarea' });
   } catch (error) {
-    console.log('Error', err);
+    console.log('Error', error);
   }
 });
 
@@ -25,7 +25,7 @@ router.get('/editar', async (req, res) => {
   try {
     res.render('categoria/vweditarcategorias', { objTarea: 'tarea' });
   } catch (error) {
-    console.log('Error', err);
+    console.log('Error', error);
   }
 });
 
@@ -126,8 +126,8 @@ router.post('/agregar-categoria', async (req, res) => {
       // console.log(categoriaGuardada);
     }
 
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+    console.log('Error', error);
   }
 });
 
@@ -190,8 +190,8 @@ router.post('/editar-subcategoria', async (req, res) => {
     res.json(true);
 
 
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+    console.log('Error', error);
   }
 });
 
@@ -204,8 +204,8 @@ router.get('/get-all', async (req, res) => {
 
     res.json(arrObjCategorias)
 
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+    console.log('Error', error);
   }
 });
 
@@ -217,7 +217,7 @@ router.post('/get-categoria', async (req, res) => {
     const objCategoria = await Categoria.findOne({ _id: idCategoria }).lean(); // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
     res.json(objCategoria);
   } catch (error) {
-    console.log('Error', err);
+    console.log('Error', error);
   }
 });
 
@@ -286,8 +286,8 @@ router.post('/eliminar-categoria', async (req, res) => {
       // console.log('Elimina?', categoriaModelElimnar); // Si elimina devuelve el objeto eliminado 
     }
 
-  } catch (err) {
-    console.log('Error', err);
+  } catch (error) {
+    console.log('Error', error);
   }
 });
 
@@ -325,7 +325,7 @@ router.get('/prueba-flash', async (req, res) => {
     req.flash('success', 'Categoría agregada correctamente');
     res.redirect('/tarea/agregar');
   } catch (error) {
-    console.log('Error', err);
+    console.log('Error', error);
   }
 });
 

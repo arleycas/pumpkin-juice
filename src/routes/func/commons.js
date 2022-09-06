@@ -49,4 +49,31 @@ Commons.validateDataBackend = (objRevision) => {
   return objResponse;
 }
 
+Commons.beautyDate = (date) => {
+  // transforma objeto de tipo date de JS en string de fecha bonita
+  console.log(typeof date);
+  console.log(date);
+  const
+    rawDate = new Date(date),
+    objMonths = {
+      0: 'ene',
+      1: 'feb',
+      2: 'mar',
+      3: 'abr',
+      4: 'may',
+      5: 'jun',
+      6: 'jul',
+      7: 'ago',
+      8: 'sep',
+      9: 'oct',
+      10: 'nov',
+      11: 'dic',
+    },
+    day = rawDate.getDate(),
+    month = rawDate.getMonth(),
+    year = rawDate.getFullYear();
+
+  return `${day} ${objMonths[month]} ${year}`;
+}
+
 export default Commons;

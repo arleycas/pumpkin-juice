@@ -31,6 +31,14 @@ export const crearTarea = async (req, res) => {
         idFeedback: '#feedBackSubcategoria',
         validations: ['empty']
       },
+      estado: {
+        campo: 'estado',
+        valor: estado,
+        obli: true,
+        idElem: '#selEstado',
+        idFeedback: '#feedBackEstado',
+        validations: ['empty']
+      },
       fechaDesde: {
         campo: 'desde',
         valor: desdeHasta[0],
@@ -53,7 +61,6 @@ export const crearTarea = async (req, res) => {
       objResponse.isValid = false; // en realidad este no es tan necesario, ya que si objResponse.faltantes tiene algun objeto dentro ya se sabe que no se debe dejar pasar la información
       res.json(objResponse);
     }
-
 
     if (objResponse.faltantes.length === 0) { // valido
       const

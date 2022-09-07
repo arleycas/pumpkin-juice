@@ -68,6 +68,7 @@ export const crearTarea = async (req, res) => {
         tareaGuardada = await tarea.save();
 
       if (tareaGuardada) {
+        objResponse.idTarea = tareaGuardada._id;
         req.flash('messageSuccess', 'Tarea agregada correctamente');
         res.json(objResponse);
       }

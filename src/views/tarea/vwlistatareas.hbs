@@ -1,3 +1,5 @@
+<link rel='stylesheet' href='/css/styles.listatareas.css' />
+
 <h1>VISTA TAREAS <i class='bx bxs-notepad'></i></h1>
 
 {{#if hayTareas}}
@@ -8,10 +10,10 @@
         {{#each arrObjData}}
 
           {{! todo, los estilos pasar a un css luego }}
-          <div class='col-6'>
-            <div class='card animate__animated'>
+          <div class='col-sm-12 col-md-6'>
+            <div class='card animate__animated' id='cardId{{this._id}}' style='margin-bottom: 1rem;'>
               <div class='card-body'>
-                <p id='est{{this._id}}'><i class='bx bxs-cog bx-spin' style='color: #c99941;'></i> {{this.estado}}</p>
+                <p id='est{{this._id}}'><i class='{{this.classIcon}}' style='color: {{this.colorIcon}}'></i> {{this.estado}}</p>
                 <p id='des{{this._id}}'>{{this.descripcion}}</p>
                 <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat{{this._id}}'>{{this.categoria}}</span></div>
                 <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub{{this._id}}'>{{this.subcategoria}}</span></div>
@@ -49,3 +51,73 @@
 {{else}}
   No hay tareas pe
 {{/if}}
+
+<div class='cont_btn_floating'>
+  <button class='icon-btn add-btn' data-bs-toggle='modal' data-bs-target='#modalAgregarTarea'>
+    <div class='add-icon'></div>
+    <div class='btn-txt' style='font-size: .8rem; color: #fff'>(づ￣ 3￣)づ</div>
+  </button>
+</div>
+
+{{! * Modal Agregar tarea }}
+
+<!-- Modal -->
+<div class='modal fade' id='modalAgregarTarea' tabindex='-1' aria-labelledby='modalAgregarTareaLabel' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='modalAgregarTareaLabel'>Agregar nueva tarea</h5>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+        <div class='container'>
+
+          <form action=''>
+            <label for='inpDescripcion' class='form-label'>Texto descripción</label>
+            <textarea id='inpDescripcion' class='form-control fitem' rows='3'></textarea>
+            <div id='feedBackDescripcion' class='feedback_box'></div>
+
+            <label for='selCategoria' class='form-label'>Selecciona una categoria</label>
+            <select id='selCategoria' class='form-select fitem' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona una categoría</option>
+            </select>
+            <div id='feedBackCategoria' class='feedback_box'></div>
+
+            <label for='selSubcategoria' class='form-label'>Selecciona una subcategoria</label>
+            <select id='selSubcategoria' class='form-select fitem' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona una subcategoría</option>
+            </select>
+            <div id='feedBackSubcategoria' class='feedback_box'></div>
+
+            <label for='selSubcategoria' class='form-label'>Selecciona una estado</label>
+            <select id='selEstado' class='form-select' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona estado</option>
+              <option value='Doing'>Doing</option>
+              <option value='To Do'>To Do</option>
+              <option value='Done'>Done</option>
+            </select>
+            <div id='feedBackEstado' class='feedback_box'></div>
+
+            <label for='inpFechaDesde' class='form-label'>Desde</label>
+            <input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
+            <div id='feedBackFechaDesde' class='feedback_box'></div>
+
+            <label for='inpFechaHasta' class='form-label'>Hasta</label>
+            <input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
+            <div id='feedBackFechaHasta' class='feedback_box'></div>
+
+            <div class='d-flex justify-content-center'>
+              <button id='btnNuevaTarea' type='button' class='btn btn-primary'>Agregar</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src='/js/tarea/vwagregartarea.js'></script>

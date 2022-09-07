@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // let myModal = new bootstrap.Modal(document.querySelector('#modalEditarTarea'), options)
   const
     contCardTareas = document.querySelector('#contCardTareas'),
     btnBackPag = document.querySelector('#btnBackPag'),
     btnNextPag = document.querySelector('#btnNextPag');
   let nPagActual = 1;
 
+  // * manejador de la url de este modulo
   if (window.location.pathname.length) {
     const
       arrUrl = window.location.pathname.split('/');
@@ -19,6 +19,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // * si la pagina actual no tiene cards, entonces que me envie a la anterior página
     if (document.querySelectorAll('.card').length === 0) {
       window.location.href = `/tarea/lista/${nPagActual - 1}`;
+    }
+
+    // * (manejador de variables de URL) comprueba si hay alguna card nueva creada que necesite ser animada
+    if (window.location.search) {
+      const
+        queryString = window.location.search, // retorna algo como '?anicard=1234'
+        urlParams = new URLSearchParams(queryString), // guarda todas las variables de la URL
+        idCard = urlParams.get('anicard'), // se obtiene la que necesitamos
+        card = document.querySelector(`#cardId${idCard}`);
+
+      if (card) document.querySelector(`#cardId${idCard}`).classList.add('animate__rubberBand'); // anima la card
+      window.history.pushState({}, document.title, "/tarea/lista/1"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
     }
 
     // * gestiona el nav de paginación (botones next y back)
@@ -43,9 +55,6 @@ document.addEventListener('DOMContentLoaded', () => {
       const
         target = e.target.tagName.toLowerCase() === 'button' ? e.target : e.target.parentElement,
         idTarea = target.getAttribute('data-id');
-
-      console.log(idTarea);
-
 
       Swal.fire({
         title: '¿Segura?',

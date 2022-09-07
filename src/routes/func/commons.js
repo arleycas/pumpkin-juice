@@ -11,8 +11,7 @@ Commons.isEmpty = (val) => {
 Commons.validateDataBackend = (objRevision) => {
 
   let objResponse = { isValid: true, faltantes: [] };
-  console.log('objRevision', objRevision);
-
+  // console.log('objRevision', objRevision);
   // 1. se recorre cada obj del obj revisión (cada objeto representa un elemento de formulario)
   for (const property in objRevision) {
     // console.log(`${property}: ${objRevision[property]}`);
@@ -51,8 +50,6 @@ Commons.validateDataBackend = (objRevision) => {
 
 Commons.beautyDate = (date) => {
   // transforma objeto de tipo date de JS en string de fecha bonita
-  console.log(typeof date);
-  console.log(date);
   const
     rawDate = new Date(date),
     objMonths = {

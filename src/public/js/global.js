@@ -106,6 +106,8 @@ function proccessResponse(data) {
         document.querySelector(obj.idFeedback).innerHTML += `${msg}<br>`;
       })
     });
+
+    ocultarLoader();
   }
 
   if (res.isValid) {

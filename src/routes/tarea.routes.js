@@ -54,9 +54,10 @@ router.get('/lista/:pag', async (req, res) => {
 
       const
         skipDocs = parseInt(`${pag - 1}0`), // ej si el user pide la pag 3 -> se resta 1 queda en 2 -> se le agrega 0 queda en 20, la consulta va a saltar 20 documentos ya que los de la página 3 son los documentos 21 al 30
-        arrObjTareas = await Tarea.find().skip(skipDocs).limit(10).lean();
+        arrObjTareas = await Tarea.find().sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean(); // Las tareas mas viejas van a apareciendo de primeras
 
-      console.log('cant tareas', arrObjTareas.length);
+
+      // console.log('cant tareas', arrObjTareas.length);
 
       // * Si no hay tareas se envia false
       if (arrObjTareas.length === 0) {
@@ -73,7 +74,7 @@ router.get('/lista/:pag', async (req, res) => {
           idSubcatTarea = obj.subcategoria,
           objCategoria = await Categoria.findOne({ _id: idCategoria }).lean();
 
-        console.log('busca', objCategoria);
+        // console.log('busca', objCategoria);
 
         // console.log('OBJETIFICADO!!!!', objCategoria);
 
@@ -81,10 +82,19 @@ router.get('/lista/:pag', async (req, res) => {
         // console.log('esto otro', objCategoria.subcategoria[0]._id.toString());
         // console.log('sirve?',);
 
+        const dicEstadoIcon = {
+          'Doing': { color: '#c99941', class: 'bx bxs-cog bx-spin' },
+          'To Do': { color: '#c94173', class: 'bx bxs-hourglass bx-tada' },
+          'Done': { color: '#043206', class: 'bx bx-check bx-flashing' }
+        }
+
+        // todo, hacer un diccionario de los estados y desde acá enviar que icono y que clase debe llevar (para cambiar colores y eso)
         await arrObjData.push({
           _id: obj._id,
           descripcion: obj.descripcion,
           estado: obj.estado,
+          colorIcon: dicEstadoIcon[obj.estado].color,
+          classIcon: dicEstadoIcon[obj.estado].class,
           categoria: objCategoria ? objCategoria.categoria : 'No existe categoría',
           subcategoria: objCategoria ? getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea }) : 'No existe subcategoria',
           fechaDesde: Commons.beautyDate(obj.desdeHasta[0]),

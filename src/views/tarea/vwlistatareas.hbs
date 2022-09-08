@@ -2,7 +2,20 @@
 
 <h1>VISTA TAREAS <i class='bx bxs-notepad'></i></h1>
 
+<div class='container d-flex justify-content-center'>
+  <div style='width: 200px;'>
+    <label for='selFiltroEstado' class='form-label'><i class='bx bxs-filter-alt'></i> Elije un estado</label>
+    <select id='selFiltroEstado' class='form-select' aria-label='Default select example'>
+      <option selected value='All'>All</option>
+      <option value='Doing'>Doing</option>
+      <option value='To Do'>To Do</option>
+      <option value='Done'>Done</option>
+    </select>
+  </div>
+</div>
+
 {{#if hayTareas}}
+
   <div id='contCardTareas'>
     <div class='container'>
       <div class='row'>
@@ -52,72 +65,11 @@
   No hay tareas pe
 {{/if}}
 
+<script src='/js/tarea/vwlistatareasFiltro.js'></script>
+
 <div class='cont_btn_floating'>
-  <button class='icon-btn add-btn' data-bs-toggle='modal' data-bs-target='#modalAgregarTarea'>
+  <button class='icon-btn add-btn' onclick="location.href='/tarea/agregar'">
     <div class='add-icon'></div>
     <div class='btn-txt' style='font-size: .8rem; color: #fff'>(づ￣ 3￣)づ</div>
   </button>
 </div>
-
-{{! * Modal Agregar tarea }}
-
-<!-- Modal -->
-<div class='modal fade' id='modalAgregarTarea' tabindex='-1' aria-labelledby='modalAgregarTareaLabel' aria-hidden='true'>
-  <div class='modal-dialog'>
-    <div class='modal-content'>
-      <div class='modal-header'>
-        <h5 class='modal-title' id='modalAgregarTareaLabel'>Agregar nueva tarea</h5>
-        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
-      </div>
-      <div class='modal-body'>
-        <div class='container'>
-
-          <form action=''>
-            <label for='inpDescripcion' class='form-label'>Texto descripción</label>
-            <textarea id='inpDescripcion' class='form-control fitem' rows='3'></textarea>
-            <div id='feedBackDescripcion' class='feedback_box'></div>
-
-            <label for='selCategoria' class='form-label'>Selecciona una categoria</label>
-            <select id='selCategoria' class='form-select fitem' aria-label='Default select example'>
-              <option selected value='' disabled>Selecciona una categoría</option>
-            </select>
-            <div id='feedBackCategoria' class='feedback_box'></div>
-
-            <label for='selSubcategoria' class='form-label'>Selecciona una subcategoria</label>
-            <select id='selSubcategoria' class='form-select fitem' aria-label='Default select example'>
-              <option selected value='' disabled>Selecciona una subcategoría</option>
-            </select>
-            <div id='feedBackSubcategoria' class='feedback_box'></div>
-
-            <label for='selSubcategoria' class='form-label'>Selecciona una estado</label>
-            <select id='selEstado' class='form-select' aria-label='Default select example'>
-              <option selected value='' disabled>Selecciona estado</option>
-              <option value='Doing'>Doing</option>
-              <option value='To Do'>To Do</option>
-              <option value='Done'>Done</option>
-            </select>
-            <div id='feedBackEstado' class='feedback_box'></div>
-
-            <label for='inpFechaDesde' class='form-label'>Desde</label>
-            <input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
-            <div id='feedBackFechaDesde' class='feedback_box'></div>
-
-            <label for='inpFechaHasta' class='form-label'>Hasta</label>
-            <input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
-            <div id='feedBackFechaHasta' class='feedback_box'></div>
-
-            <div class='d-flex justify-content-center'>
-              <button id='btnNuevaTarea' type='button' class='btn btn-primary'>Agregar</button>
-            </div>
-          </form>
-
-        </div>
-      </div>
-      <div class='modal-footer'>
-        <button type='button' class='btn btn-secondary' data-bs-dismiss='modal'>Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script src='/js/tarea/vwagregartarea.js'></script>

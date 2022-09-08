@@ -19,7 +19,8 @@ router.get('/lista/:pag', async (req, res) => {
   try {
     const
       nDocumentos = await Tarea.count(), // 1. trae la cantidad de documentos (Tarea) que existen
-      pag = req.params.pag;
+      pag = req.params.pag,
+      estado = req.query.estado;
 
     if (nDocumentos) {
       let nPaginacion = 0;
@@ -52,16 +53,23 @@ router.get('/lista/:pag', async (req, res) => {
         arrPaginacion.push(i + 1);
       }
 
-      const
-        skipDocs = parseInt(`${pag - 1}0`), // ej si el user pide la pag 3 -> se resta 1 queda en 2 -> se le agrega 0 queda en 20, la consulta va a saltar 20 documentos ya que los de la página 3 son los documentos 21 al 30
-        arrObjTareas = await Tarea.find().sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean(); // Las tareas mas viejas van a apareciendo de primeras
+      const skipDocs = parseInt(`${pag - 1}0`); // ej si el user pide la pag 3 -> se resta 1 queda en 2 -> se le agrega 0 queda en 20, la consulta va a saltar 20 documentos ya que los de la página 3 son los documentos 21 al 30
+      let arrObjTareas = null;
+
+      if (estado) {
+        arrObjTareas = await Tarea.find({ estado: estado.trim() }).sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean(); // Las tareas mas viejas van a apareciendo de primeras
+      }
+
+      if (!estado) {
+        arrObjTareas = await Tarea.find().sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean();
+      }
 
 
       // console.log('cant tareas', arrObjTareas.length);
 
       // * Si no hay tareas se envia false
       if (arrObjTareas.length === 0) {
-        return;
+        res.render('tarea/vwlistatareas', { title: 'Lista tareas', hayTareas: false });
       }
 
       // console.log(arrObjTareas.length, arrObjData.length);

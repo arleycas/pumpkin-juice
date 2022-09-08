@@ -29,8 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
         idCard = urlParams.get('anicard'), // se obtiene la que necesitamos
         card = document.querySelector(`#cardId${idCard}`);
 
-      if (card) document.querySelector(`#cardId${idCard}`).classList.add('animate__rubberBand'); // anima la card
-      window.history.pushState({}, document.title, "/tarea/lista/1"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
+      if (idCard) {
+        if (card) document.querySelector(`#cardId${idCard}`).classList.add('animate__rubberBand'); // anima la card
+        window.history.pushState({}, document.title, "/tarea/lista/1"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
+      }
+
     }
 
     // * gestiona el nav de paginación (botones next y back)

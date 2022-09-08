@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
   const
-    modalAgregarTarea = document.querySelector('#modalAgregarTarea'),
     inpDescripcion = document.querySelector('#inpDescripcion'),
     selCategoria = document.querySelector('#selCategoria'),
     selSubcategoria = document.querySelector('#selSubcategoria'),
@@ -9,13 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     inpFechaHasta = document.querySelector('#inpFechaHasta'),
     btnNuevaTarea = document.querySelector('#btnNuevaTarea')
     ;
-
-  modalAgregarTarea.addEventListener('hide.bs.modal', (e) => {
-    // detecta cierre de modal
-    // todo, si lo cierra con el boton que se borre? y si lo cierra dando click por fuera no? (por si depronto se sale sin culpa)
-    //  todo, o poner un boton de limpiar formulario? (se me hace mejor por si depronto se sale sin culpa)
-    // Swal.fire('hasido cerrado')
-  });
 
   // rellena ambos select de categorias
   getData('/categoria/get-all')

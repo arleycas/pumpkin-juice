@@ -22,22 +22,25 @@
           {{! Si le pongo un botón de eliminar que pasa con las tareas que tengan esta categoría? }}
         </form>
 
-        <h3>Listado de subcategorias</h3>
-        {{! TODO que se pueda agregar subcategorias desde este apartado }}
-        <button onclick='alert("Funcion no disponible por el momento")'>Agregar subcategoria</button>
-        <table id='tableSubcategorias' class='table'>
-          <thead>
-            <tr>
-              <th scope='col'>Subcategoría</th>
-              <th scope='col'>Editar</th>
-              <th scope='col'>Eliminar</th>
-              <!-- Si se elimina ¿poner 'subcategoría eliminada' en tareas?'-->
-            </tr>
-          </thead>
-          <tbody id='bodyTableSubcategorias' class=''>
+        <div id='contListado' class='display_none'>
+          <h3>Listado de subcategorias</h3>
+          {{! TODO que se pueda agregar subcategorias desde este apartado }}
+          <button id='btnAgregarSubcategoria' type='button' class='btn btn-primary'>Agregar subcategoria</button>
+          <table id='tableSubcategorias' class='table'>
+            <thead>
+              <tr>
+                <th scope='col'>Subcategoría</th>
+                <th scope='col'>Editar</th>
+                <th scope='col'>Eliminar</th>
+                <!-- Si se elimina ¿poner 'subcategoría eliminada' en tareas?'-->
+              </tr>
+            </thead>
+            <tbody id='bodyTableSubcategorias' class=''>
 
-          </tbody>
-        </table>
+            </tbody>
+          </table>
+        </div>
+
       </div>
 
     </div>

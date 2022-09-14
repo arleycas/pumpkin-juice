@@ -117,6 +117,42 @@ function proccessResponse(data) {
   }
 }
 
+window.getRandomNaniPhrase = () => {
+
+  const arrPhrases = [
+    'Ando caminando con un flow violento 😎',
+    'Increible! 😮',
+    'Fantabulástico!',
+    'Como te decimos, J.K. Rowling?',
+    'No te duele la manito? 😧',
+    'Un dulcecito al Dev no le caería mal 🤐',
+    'No olvides tomar aguita ♥',
+    'Dato curioso: Esta app vale millones! 🤯',
+    'Tu peco coco siempre te piensa 🙈',
+    'Ten un lindo día 🥰',
+    'Señorita apague las luces que no está usando! 😠',
+    'Si, efectivamente estoy programada en el lenguaje del amor 💞',
+    'Oye, para donde tan guapa?',
+    'El Dev quiere alitas 🤤',
+    'Esos crespitos se te ven muy lindos, solo digo',
+    'Soy transeconómico, soy un millonario atrapado en el cuerpo de un pobre 😩',
+    'El dinero no me hace feliz... me hace falta 💸',
+    'Me gustaría ser pobre por un dia, porque esto de serlo a diario me tiene 🥴',
+    'Me quedé sin ideas... 😶',
+    'Si soy UNA app, entonces... soy una niña? 🤔',
+    '♪ Hoy no recuerdo... como podía... sin conocerla.. pasar mi vida ♫',
+    'Sabes que? Mejor llama a Saúl 😪',
+    'Me dicen el Jeisenber',
+    'Error grave bip bip... mentiras! bromita 🙈',
+    'Y recuerden amigos, formato BN no es formato "bien" 🤣'
+  ]
+
+  const
+    nElements = arrPhrases.length - 1, // ya que la cantidad de elementos no cuadre con la cantidad de indices xD
+    nRandom = Math.floor(Math.random() * (nElements - 0 + 1)) + 0;
+  return arrPhrases[nRandom];
+}
+
 // * detecta si la pagina está desde un dispositivo mobil
 // mejor meter la función en window!!!
 window.isMobileOrTablet = () => {

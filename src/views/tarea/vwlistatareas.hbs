@@ -20,6 +20,11 @@
     <div class='container'>
       <div class='row'>
 
+        <div class='col-sm-12 d-flex flex-column'>
+          <p style='margin-top: 1rem; text-align: center'>😃 Hay {{cantTareas}} tarea(s) en la app.</p>
+          <p style='text-align: center;'>🎃 <span id='phraseRandom'></span></p>
+        </div>
+
         {{#each arrObjData}}
 
           {{! todo, los estilos pasar a un css luego }}
@@ -31,8 +36,11 @@
                 <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat{{this._id}}'>{{this.categoria}}</span></div>
                 <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub{{this._id}}'>{{this.subcategoria}}</span></div>
                 <p style='margin-top: 1rem;'><i class='bx bxs-calendar'></i> {{this.fechaDesde}} ~ {{this.fechaHasta}}</p>
-                <a href='/tarea/editar/{{this._id}}' class='btn btn-primary' tabindex='-1' role='button'>Editar</a>
-                <button data-id='{{this._id}}' type='button' class='btn btn-primary btn_eliminar_tarea'><i class='bx bxs-trash-alt icon_eliminar_tarea'></i></button>
+
+                <div class='d-flex justify-content-end'>
+                  <a href='/tarea/editar/{{this._id}}' class='btn card__btn' tabindex='-1' role='button'><i class='bx bxs-edit'></i></a>
+                  <button data-id='{{this._id}}' type='button' class='btn card__btn btn_eliminar_tarea'><i class='bx bxs-trash-alt icon_eliminar_tarea'></i></button>
+                </div>
               </div>
             </div>
           </div>

@@ -1,7 +1,7 @@
 .cont_btn_floating {
   position: fixed;
-  right: 30px;
-  bottom: 30px;
+  right: 20px;
+  bottom: 20px;
 }
 
 /* From uiverse.io by @mrhyddenn */
@@ -100,4 +100,19 @@
   right: 15px;
   height: 4px;
   top: calc(50% - 2px);
+}
+
+/* Card tarea */
+.card .card__btn{
+  margin: .5rem;
+  padding: 0;
+}
+.card .card__btn:focus{
+  box-shadow: none;
+  color: #8a3535;
+}
+
+.card .card__btn i{
+  color: #888;
+  font-size: 1.3rem;
 }

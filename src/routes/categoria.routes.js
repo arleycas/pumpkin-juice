@@ -30,7 +30,7 @@ router.get('/editar', async (req, res) => {
 });
 
 router.post('/agregar-categoria', async (req, res) => {
-
+  // ? esta ruta agrega categoria y subcategoria
   // console.log(req);
   console.log(req.body);
 
@@ -84,7 +84,7 @@ router.post('/agregar-categoria', async (req, res) => {
 
       const categoriaModel = await Categoria.find({ categoria }).lean(); // 1. lo busca (devuelve un array de objetos)
 
-      console.log(categoriaModel);
+      // console.log(categoriaModel);
       if (categoriaModel.length) {
         // 1.1. Si lo encuentra, hace update
         const filter = { categoria: categoriaModel[0].categoria };
@@ -131,6 +131,46 @@ router.post('/agregar-categoria', async (req, res) => {
   }
 });
 
+router.post('/agregar-subcategoria', async (req, res) => {
+
+  try {
+
+    const
+      idCategoria = req.body.idCategoria,
+      subcategoriaNueva = cleanString(req.body.subcategoriaNueva),
+      categoriaModel = await Categoria.findById(idCategoria).lean(); // 1. busca el objeto Categoria con ese id
+
+    if (categoriaModel) {
+      const
+        arrSubcategorias = categoriaModel.subcategoria, // 2. Extraer el array de subcategorias que tiene el objeto
+        existe = arrSubcategorias.some(elem => elem.nombre === subcategoriaNueva); // 3. Validar si ya existe o no la subcategoria a agregar
+
+      if (!existe) { // 4. Se agrega la subcategoria si no existe
+
+        let nuevoArrSubcategorias = arrSubcategorias;
+        nuevoArrSubcategorias.push({ nombre: subcategoriaNueva });
+
+        const
+          filter = { _id: idCategoria },
+          update = { subcategoria: nuevoArrSubcategorias },
+          updateCategoria = await Categoria.findOneAndUpdate(filter, update);
+        // console.log('Se actualizó', updateCategoria);
+        res.json({ success: true, msg: `Subcategoría <span style="color: #42A9DF">${subcategoriaNueva}</span> agregada!` });
+        return;
+      }
+
+      res.json({ success: false, msg: `La subcategoía ${subcategoriaNueva} ya existe!` });
+      return;
+    }
+
+    res.json({ success: false, msg: `La categoría no existe!` });
+    return;
+
+  } catch (error) {
+    console.log('Error', error);
+  }
+});
+
 router.post('/editar-categoria', async (req, res) => {
   // todo, validar strings que vienen del front
   const
@@ -139,8 +179,7 @@ router.post('/editar-categoria', async (req, res) => {
     update = { categoria: categoriaNueva },
     resUpdateCategoria = await Categoria.findOneAndUpdate(filter, update);
 
-  console.log(resUpdateCategoria);
-
+  // console.log(resUpdateCategoria);
   req.flash('messageSuccess', `Nombre de categoría actualizado de <span style="color: #9f0000">${categoriaVieja}</span> a <span style="color: #42A9DF">${categoriaNueva}</span>`);
   res.json(true);
 
@@ -156,37 +195,33 @@ router.post('/editar-subcategoria', async (req, res) => {
 
     const objCategoria = await Categoria.findById(idCategoria).lean();
 
-    console.log('obj categoría', objCategoria);
+    // console.log('obj categoría', objCategoria);
 
     const arrSubcategorias = objCategoria.subcategoria;
 
     const ObjSubcateEncontrada = arrSubcategorias.find(obj => obj.nombre === subcategoriaVieja);
 
-    console.log('ObjSubcateEncontrada ---->', ObjSubcateEncontrada);
+    // console.log('ObjSubcateEncontrada ---->', ObjSubcateEncontrada);
     const indice = arrSubcategorias.findIndex(x => x.nombre === subcategoriaVieja); // obtenemos el indice donde está la subcategoría a editar
-    console.log('indice', indice);
+    // console.log('indice', indice);
 
     // ------------------
     // const indice = arrSubcategorias.indexOf(subcategoriaVieja); 
 
-    console.log('viejo arr', arrSubcategorias);
+    // console.log('viejo arr', arrSubcategorias);
     let nuevoArrSucategorias = arrSubcategorias.filter((item) => item.nombre !== subcategoriaVieja) // creamos un nuevo array sin la categoria vieja
 
-    console.log('nuevo Arr', nuevoArrSucategorias);
+    // console.log('nuevo Arr', nuevoArrSucategorias);
     nuevoArrSucategorias.splice(indice, 0, { _id: ObjSubcateEncontrada._id, nombre: subcategoriaNueva }); // le insertamos el nuevo obj subcategoria, con splice para que quede en la misma posición que estaba la anterior subcategoria https://kervin.blog/como-insertar-un-elemento-en-una-posicion-especifica-en-javascript
 
-    console.log('nuevo arr a insertar', nuevoArrSucategorias);
-
+    // console.log('nuevo arr a insertar', nuevoArrSucategorias);
 
     const
       filter = { _id: idCategoria },
       update = { subcategoria: nuevoArrSucategorias };
 
-    console.log('se actualizó', updateCategoria);
+    // console.log('se actualizó', updateCategoria);
     const updateCategoria = await Categoria.findOneAndUpdate(filter, update);
-    res.json(true);
-
-
     res.json(true);
 
 
@@ -293,7 +328,7 @@ router.post('/eliminar-categoria', async (req, res) => {
 
 router.post('/eliminar-subcategoria', async (req, res) => {
 
-  const { idCategoria, idSubcategoria } = req.body;
+  const { idCategoria, idSubcategoria, nombreSubCat } = req.body;
 
   const objCategoria = await Categoria.findById(idCategoria).lean(); // 1. Busca el documento 'Categoria'
 
@@ -312,7 +347,7 @@ router.post('/eliminar-subcategoria', async (req, res) => {
     updateCategoria = await Categoria.findOneAndUpdate(filter, update), // Elimina subcategoria de ese documento 'Categoria'
     objTareasEliminadas = await Tarea.deleteMany({ subcategoria: idSubcategoria }); // Elimina tareas con esa subcategoria
 
-  req.flash('messageSuccess', `Subcategoría <span style="color: #9f0000">${objCategoria.categoria}</span> eliminada junto con <span style="color: #9f0000">${objTareasEliminadas.deletedCount}</span> tareas asociadas`);
+  req.flash('messageSuccess', `Subcategoría <span style="color: #9f0000">${nombreSubCat}</span> eliminada junto con <span style="color: #9f0000">${objTareasEliminadas.deletedCount}</span> tareas asociadas`);
   res.json(true);
 
 });
@@ -329,7 +364,7 @@ router.get('/prueba-flash', async (req, res) => {
   }
 });
 
-// ? Dejar estas funciónes como global en un archivo import?
+// todo Dejar estas funciónes como global en un archivo import?
 function cleanString(str) {
 
   str = str.replace(/ +(?= )/g, ''); // quita si ponen más de un espacio

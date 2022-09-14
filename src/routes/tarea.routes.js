@@ -111,7 +111,7 @@ router.get('/lista/:pag', async (req, res) => {
 
 
         if (arrObjTareas.length === arrObjData.length) {
-          res.render('tarea/vwlistatareas', { title: 'Lista tareas', arrObjData, arrPaginacion, hayTareas: true });
+          res.render('tarea/vwlistatareas', { title: 'Lista tareas', arrObjData, arrPaginacion, hayTareas: true, cantTareas: nDocumentos });
         }
 
         // console.log(arrObjCategorias);

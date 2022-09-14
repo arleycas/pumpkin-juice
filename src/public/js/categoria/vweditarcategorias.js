@@ -2,7 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   cargarLoader();
   const
     selConfigCategoria = document.querySelector('#selConfigCategoria'),
+    contListado = document.querySelector('#contListado'),
     tableSubcategorias = document.querySelector('#tableSubcategorias'),
+    btnAgregarSubcategoria = document.querySelector('#btnAgregarSubcategoria'),
     bodyTableSubcategorias = document.querySelector('#bodyTableSubcategorias'),
     btnEditarCategoria = document.querySelector('#btnEditarCategoria'),
     btnEliminarCategoria = document.querySelector('#btnEliminarCategoria')
@@ -26,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         //arma la tabla de subcategorías
         const arrSubcategorias = res.subcategoria;
 
-        console.log(arrSubcategorias);
+        // console.log(arrSubcategorias);
 
         bodyTableSubcategorias.innerHTML = '';
 
@@ -44,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
 
+        contListado.classList.remove('display_none');
         btnEditarCategoria.disabled = false;
         btnEliminarCategoria.disabled = false;
       });
@@ -86,12 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
       html: `Si eliminas la categoria <span class='txt-danger'>${selConfigCategoria.options[selConfigCategoria.selectedIndex].text}</span> se borrarán todas las tareas asociadas a esta`,
       icon: '',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3c4d5e',
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Si, borrala!',
       imageUrl: '/img/5e535aa1d871310896104715_peep-77.svg',
-      imageWidth: 150
+      imageWidth: 150,
+      focusCancel: true
     }).then((result) => {
       if (result.isConfirmed) {
 
@@ -112,6 +116,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
   });
 
+  btnAgregarSubcategoria.addEventListener('click', (e) => {
+
+    const
+      idCategoria = selConfigCategoria.value,
+      nombreCategoria = selConfigCategoria.options[selConfigCategoria.selectedIndex].text;
+
+    Swal.fire({
+      title: `Nueva subcategoría para <span style="color: #7066e0;">${nombreCategoria}</span>`,
+      input: 'text',
+      inputLabel: '\(@^0^@)/',
+      inputPlaceholder: 'Escribe la nueva subcategoría',
+      showCancelButton: true,
+      confirmButtonText: 'Agregar',
+      cancelButtonText: 'Cancelar',
+      inputValidator: (subcategoriaNueva) => {
+        if (!subcategoriaNueva) {
+          return 'Debes escribir algo!'
+        } else {
+          cargarLoader();
+          postData('/categoria/agregar-subcategoria', { idCategoria, subcategoriaNueva })
+            .then(res => {
+              // console.log(res);
+              if (res.success) {
+                selConfigCategoria.dispatchEvent(new Event('change'));
+                selConfigCategoria.value = idCategoria;
+                Toast.fire({ icon: 'success', title: res.msg });
+              }
+
+              if (res.success === false) Toast.fire({ icon: 'error', title: res.msg });
+
+              ocultarLoader();
+
+            });
+        }
+      }
+    });
+  });
+
   // * listeners de los botones que estan en la tabla de subcategorias (editar y eliminar)
   tableSubcategorias.addEventListener('click', (e) => {
 
@@ -122,7 +164,6 @@ document.addEventListener('DOMContentLoaded', () => {
         idCategoria = btn.getAttribute('data-idcat'),
         idSubcategoria = btn.getAttribute('data-idsubcat'),
         subcategoriaVieja = btn.getAttribute('data-value');
-
 
       Swal.fire({
         title: 'Edita el nombre de la subcategoría',
@@ -167,16 +208,17 @@ document.addEventListener('DOMContentLoaded', () => {
         html: `Si eliminas la subcategoria <span class='txt-danger'>${nombreSubCat}</span> se borrarán todas las tareas asociadas a esta`,
         icon: '',
         showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3c4d5e',
         cancelButtonText: 'Cancelar',
         confirmButtonText: 'Si, borrala!',
         imageUrl: '/img/5e535aa1d871310896104715_peep-77.svg',
-        imageWidth: 150
+        imageWidth: 150,
+        focusCancel: true
       }).then((result) => {
         if (result.isConfirmed) {
 
-          postData('/categoria/eliminar-subcategoria', { idCategoria, idSubcategoria })
+          postData('/categoria/eliminar-subcategoria', { idCategoria, idSubcategoria, nombreSubCat })
             .then(res => {
               console.log(res);
               window.location.href = '';

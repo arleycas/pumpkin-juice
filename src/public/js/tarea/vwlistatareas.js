@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const
+    phraseRandom = document.querySelector('#phraseRandom'),
     contCardTareas = document.querySelector('#contCardTareas'),
     btnBackPag = document.querySelector('#btnBackPag'),
     btnNextPag = document.querySelector('#btnNextPag');
@@ -99,6 +100,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
   });
+
+  // * frase random
+
+  phraseRandom.innerHTML = window.getRandomNaniPhrase();
 
 
 });

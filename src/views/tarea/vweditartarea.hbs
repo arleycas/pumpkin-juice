@@ -1,34 +1,57 @@
-<h1>Editar tareta</h1>
+<div class='container'>
 
-<input id='inpIdTarea' type='hidden' value='{{objTarea._id}}' />
+  <div class='row justify-content-md-center'>
 
-<textarea id='inpDescripcion' class='form-control fitem' rows='3'></textarea>
-<div id='feedBackDescripcion' class='feedback_box'></div>
+    <div class='col col-sm-12 col-md-6'>
 
-<select id='selEstado' class='form-select' aria-label='Default select example'>
-  <option selected value='' disabled>Selecciona estado</option>
-  <option value='Doing'>Doing</option>
-  <option value='To Do'>To Do</option>
-  <option value='Done'>Done</option>
-</select>
-<div id='feedBackEstado' class='feedback_box'></div>
+      <div class='card p-3'>
+        <form action=''>
 
-<input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
-<div id='feedBackFechaDesde' class='feedback_box'></div>
+          <h1>Editar tareta</h1>
 
-<input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
-<div id='feedBackFechaHasta' class='feedback_box'></div>
+          <input id='inpIdTarea' type='hidden' value='{{objTarea._id}}' />
 
-<select id='selCategoria' class='form-select' aria-label='Default select example'>
-  <option selected value='' disabled>Selecciona categoria</option>
-</select>
-<div id='feedBackCategoria' class='feedback_box'></div>
+          <label for='inpDescripcion' class='form-label'>Texto descripción</label>
+          <textarea id='inpDescripcion' class='form-control fitem' rows='3'></textarea>
+          <div id='feedBackDescripcion' class='feedback_box'></div>
 
-<select id='selSubcategoria' class='form-select' aria-label='Default select example'>
-  <option selected value='' disabled>Selecciona subcategoria</option>
-</select>
-<div id='feedBackSubcategoria' class='feedback_box'></div>
+          <label for='selCategoria' class='form-label'>Selecciona una categoria</label>
+          <select id='selCategoria' class='form-select fitem' aria-label='Default select example'>
+            <option selected value='' disabled>Selecciona categoria</option>
+          </select>
+          <div id='feedBackCategoria' class='feedback_box'></div>
 
-<button id='btnEditar' type='button' class='btn btn-primary'>Editar</button>
+          <label for='selSubcategoria' class='form-label'>Selecciona una subcategoria</label>
+          <select id='selSubcategoria' class='form-select fitem' aria-label='Default select example'>
+            <option selected value='' disabled>Selecciona subcategoria</option>
+          </select>
+          <div id='feedBackSubcategoria' class='feedback_box'></div>
+
+          <label for='selEstado' class='form-label'>Selecciona una estado</label>
+          <select id='selEstado' class='form-select fitem' aria-label='Default select example'>
+            <option selected value='' disabled>Selecciona estado</option>
+            <option value='Doing'>Doing</option>
+            <option value='To Do'>To Do</option>
+            <option value='Done'>Done</option>
+          </select>
+          <div id='feedBackEstado' class='feedback_box'></div>
+
+          <label for='inpFechaDesde' class='form-label'>Desde</label>
+          <input id='inpFechaDesde' type='date' class='form-control fitem' placeholder='Descripción' />
+          <div id='feedBackFechaDesde' class='feedback_box'></div>
+
+          <label for='inpFechaHasta' class='form-label'>Hasta</label>
+          <input id='inpFechaHasta' type='date' class='form-control fitem' placeholder='Descripción' />
+          <div id='feedBackFechaHasta' class='feedback_box'></div>
+
+          <div class='d-flex justify-content-center'>
+            <button id='btnEditar' type='button' class='btn btn-primary'>Editar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <script src='/js/vweditartarea.js'></script>

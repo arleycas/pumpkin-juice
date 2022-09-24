@@ -26,7 +26,7 @@ Commons.validateDataBackend = (objRevision) => {
         switch (key) {
           case 'empty':
             if (Commons.isEmpty(element.valor))
-              objFaltante.msgs.push('Te falta rellenar este campo ♥')
+              objFaltante.msgs.push('Te falta este campo ♥')
             break;
 
           case 'numeric':

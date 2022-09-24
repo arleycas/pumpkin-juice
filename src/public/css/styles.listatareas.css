@@ -4,6 +4,12 @@
   bottom: 20px;
 }
 
+.cont_btn_floating--2 {
+  position: fixed;
+  right: 20px;
+  bottom: 100px;
+}
+
 /* From uiverse.io by @mrhyddenn */
 .icon-btn {
   width: 50px;
@@ -103,6 +109,10 @@
 }
 
 /* Card tarea */
+.card {
+  border-radius: 10px;
+}
+
 .card .card__btn{
   margin: .5rem;
   padding: 0;
@@ -115,4 +125,43 @@
 .card .card__btn i{
   color: #888;
   font-size: 1.3rem;
+}
+
+/* Modal filtros */
+.cont_filtro {
+  border: 1px solid #eceeef;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 1rem;
+}
+
+.cont_filtro__box {
+  margin-top: 1rem;
+}
+
+/* * Paginación */
+.pagination {
+  font-size: 1.3rem;
+}
+
+.page-link{
+  background-color: #e1f4f3;
+  border-color: #e1f4f3;
+  color: var(--c);
+}
+
+.page-item.active .page-link {
+  color: #ff38f0;
+  font-weight: bold;
+}
+
+.page-link:hover{
+  background-color: #b1d1cf;
+  border-color: #b1d1cf;
+  color: var(--c);
+}
+
+.page-item.active .page-link {
+  background-color: #82d9ff;
+  border-color: #82d9ff;
 }

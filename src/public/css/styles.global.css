@@ -2,6 +2,24 @@
   font-family: 'Kanit', sans-serif;
 }
 
+body {
+  background-color: #fafafa;
+}
+
+.title-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.title-page p {
+  border-radius: 10px;
+  padding: 0.5rem;
+  background: #E1F4F3;
+  color: #20232e;
+  font-size: 1.2rem;
+}
+
 .display_none {
   display: none;
 }
@@ -72,4 +90,26 @@
   padding: 1rem;
   font-family: consolas;
   margin: 1rem;
+}
+
+.rainbow-text {
+  background: linear-gradient(to right, #6666ff, #0099ff , #00ff00, #ff3399, #6666ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: rainbow_animation 6s ease-in-out infinite;
+  background-size: 400% 100%;
+  font-weight: bold;
+  font-size: 1.2rem;
+  letter-spacing: 3px;
+}
+
+@keyframes rainbow_animation {
+  0%,100% {
+      background-position: 0 0;
+  }
+
+  50% {
+      background-position: 100% 0;
+  }
 }

@@ -42,7 +42,6 @@ app.use(express.json()); // para que acepte Jsons en las peticiones
 
 // * variables globales
 // Aquí se ponen variables que queremos acceder desde cualquier parte
-// // no entendí muy bien, más adelante explicará?
 // nota: al parecer si se pone este código después de las rutas, ya no sirve el req.flash idk why
 app.use((req, res, next) => {
   app.locals.messageSuccess = req.flash('messageSuccess');

@@ -55,6 +55,7 @@ const messageFlash = () => {
     messageInfo = document.getElementById('messageInfo'),
     messageWarning = document.getElementById('messageWarning'),
     messageError = document.getElementById('messageError');
+
   if (messageSuccess) {
     message = messageSuccess.dataset.message;
     Toast.fire({ icon: 'success', title: message });
@@ -144,7 +145,15 @@ window.getRandomNaniPhrase = () => {
     'Sabes que? Mejor llama a Saúl 😪',
     'Me dicen el Jeisenber',
     'Error grave bip bip... mentiras! bromita 🙈',
-    'Y recuerden amigos, formato BN no es formato "bien" 🤣'
+    'Y recuerden amigos, formato BN no es formato "bien" 🤣',
+    '90% libre de bugs!',
+    'Esta grasa no se quita 💅',
+    'Volviste! 🤗',
+    'Made in... la cueva del Dev',
+    'Es un hecho, Bogotá queda a 3 horas de Bogotá 😪',
+    'Arlita y Nano... a no asi no era',
+    'Pecadito andante 🥺',
+    'Mira mira! un popodrilo 🐊'
   ]
 
   const

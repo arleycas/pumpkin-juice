@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100&family=Roboto:wght@400;700;900&display=swap');
+/* Basado en: https://www.youtube.com/watch?v=BsE6k7siWKE&ab_channel=OnlineTutorials */
+
+.cont_btn_floating * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* reseteo de boxicon o causa problemas */
+.buttons-list .bx {
+  line-height: unset;
+}
+
+.buttons-list { /*navigation*/
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* dot de notificación  */
+.btn-dot { /* dot de notificación  */ 
+  width: 20px;
+  height: 20px;
+  background: #ff8d00;
+  z-index: 1;
+  position: absolute;
+  top: 1px;
+  right: -2px;
+  border-radius: 70px;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+  color: #000;
+  font-size: .8em;
+  font-weight: bolder;
+  text-align: center;
+}
+
+.btn-toggle-list { /*menuToggle*/
+  position: relative;
+  width: 70px;
+  height: 70px;
+  background: #82d9ff;
+  border-radius: 70px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.15);
+}
+
+.btn-toggle-list::before {
+  content: '🎃';
+  position: absolute;
+  font-size: 2em;
+  font-weight: 900;
+  color: #ff216d;
+  transition: 1.3s;
+}
+.btn-toggle-list.active-list::before { /*active*/
+  transform: rotate(225deg);
+}
+
+.items-list { /*menu*/
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  background: #82d9ff;
+  border-radius: 70px;
+  z-index: -1;
+  transition: transform .3s, width .3s, height .3s;
+  transition-delay: 1s, .3s, .3s;
+  transition-timing-function: cubic-bezier(0.075, 0.82, 0.165, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-toggle-list.active-list ~ .items-list{
+  width: 70px;
+  height: 156px;
+  z-index: 1;
+  transform: translateY(-134px);
+  transition-delay: 0s, .3s, .3s;
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* pestañita del abajo del globo */
+.items-list::before { 
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #82d9ff;
+  left: calc(50% - 8px);
+  bottom: 4px;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  transition: .3s;
+}
+
+.btn-toggle-list.active-list ~ .items-list::before{
+  bottom: -6px;
+  transition-delay: 0.3s;
+}
+
+.items-list ul {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  gap: 14px;
+}
+
+.items-list ul li {
+  list-style: none;
+  cursor: pointer;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-30px);
+  transition: .25s;
+  transition-delay: calc(0s + var(--i));
+}
+
+.btn-toggle-list.active-list ~ .items-list ul li {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0px);
+  transition-delay: calc(0.45s + var(--i));
+}
+
+.items-list ul li a {
+  display: block;
+  font-size: 2em;
+  text-decoration: none;
+  color: #555;
+}
+.items-list ul li:hover a {
+  color: #ff216d;
+}

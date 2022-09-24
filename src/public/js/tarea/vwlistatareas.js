@@ -102,8 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // * frase random
-
   phraseRandom.innerHTML = window.getRandomNaniPhrase();
-
 
 });

@@ -1,39 +1,53 @@
-<nav class='navbar sticky-top navbar-expand-lg navbar-light bg-light'>
-  <div class='container-fluid'>
-    <button class='navbar-toggler' type='button' data-bs-toggle='collapse' data-bs-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>
-      <span class='navbar-toggler-icon'></span>
-    </button>
-    <a class='navbar-brand' href='/tarea/lista/1'>
-      <i class='bx bxs-home-heart'></i>
-    </a>
-    <div class='collapse navbar-collapse' id='navbarNav'>
-      <ul class='navbar-nav'>
+{{! Idea https://www.youtube.com/watch?v=ArTVfdHOB-M&ab_channel=OnlineTutorials }}
 
-        <li class='nav-item dropdown'>
-          <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-            Tareas
-          </a>
-          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-            <li><a class='dropdown-item' href='/tarea/lista/1'>Lista de tareas</a></li>
-            <li><a class='dropdown-item' href='/tarea/informe'>Informe</a></li>
-          </ul>
-        </li>
+<div class='cont-navbar sticky-top'>
+  <div id='navBar' class='navigation'>
+    <ul>
+      <li id='itemHome' class='list'>
+        <a href='/tarea/lista/1'>
+          <span class='icon'>
+            <i class='bx bx-home'></i>
+          </span>
+          <span class='text'>Tareas</span>
+        </a>
+      </li>
+      <li id='itemInforme' class='list'>
+        <a href='/tarea/informe'>
+          <span class='icon'>
+            <i class='bx bxs-report'></i>
+          </span>
+          <span class='text'>Informe</span>
+        </a>
+      </li>
+      <li id='itemAddCate' class='list'>
+        <a href='/categoria/agregar'>
+          <span class='icon'>
+            <i class='bx bx-message-square-add'></i>
+          </span>
+          <span class='text'>Add cate</span>
+        </a>
+      </li>
+      <li id='itemEditCate' class='list'>
+        <a href='/categoria/editar'>
+          <span class='icon'>
+            <i class='bx bx-edit-alt'></i>
+          </span>
+          <span class='text'>Edit cate</span>
+        </a>
+      </li>
+      <li id='itemConfig' class='list'>
+        <a href='#'>
+          <span class='icon'>
+            <i class='bx bx-cog'></i>
+          </span>
+          <span class='text'>Config</span>
+        </a>
+      </li>
+      <div class='indicator'>
 
-        <li class='nav-item dropdown'>
-          <a class='nav-link dropdown-toggle' href='#' id='navbarDropdownMenuLink' role='button' data-bs-toggle='dropdown' aria-expanded='false'>
-            Categorías
-          </a>
-          <ul class='dropdown-menu' aria-labelledby='navbarDropdownMenuLink'>
-            <li><a class='dropdown-item' href='/categoria/agregar'>Nueva categoria</a></li>
-            <li><a class='dropdown-item' href='/categoria/editar'>Editar categorias</a></li>
-          </ul>
-        </li>
-
-        <li class='nav-item'>
-          <a class='nav-link' href='#'>Configuración</a>
-        </li>
-
-      </ul>
-    </div>
+      </div>
+    </ul>
   </div>
-</nav>
+</div>
+
+<script src='/js/navbar/navbar.js'></script>

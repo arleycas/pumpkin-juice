@@ -1,25 +1,39 @@
+{{! importante para el menu de navegación }}
+<input id='inpView' type='hidden' value='viewInforme' />
 <div class='container'>
-  <h2>Descarga Informe</h2>
+  <div class='title-page'>
+    <p>Informe</p>
+  </div>
 
-  <select id='selAno' class='form-select' aria-label='Default select example'>
-    <option selected>Selecciona el año</option>
-  </select>
+  <div class='row'>
+    <div class='col-sm-12 col-md-4'>
+      <select id='selAno' class='form-select' aria-label='Default select example'>
+        <option selected value='' disabled>Selecciona el año</option>
+      </select>
+      <div id='feedBackAno' class='feedback_box'></div>
+    </div>
 
-  <select id='selMes' class='form-select' aria-label='Default select example'>
-    <option selected>Selecciona el mes</option>
-  </select>
+    <div class='col-sm-12 col-md-4'>
+      <select id='selMes' class='form-select' aria-label='Default select example'>
+        <option selected value='' disabled>Selecciona el mes</option>
+      </select>
+      <div id='feedBackMes' class='feedback_box'></div>
+    </div>
 
-  <button id='btnBuscar' data-id='' type='button' class='btn btn-primary'>Busca <i class='bx bx-search-alt-2'></i></button>
+    <div class='col-sm-12 col-md-4'>
+      <button id='btnBuscar' data-id='' type='button' class='btn btn-primary'>Busca <i class='bx bx-search-alt-2'></i></button>
+    </div>
+  </div>
 
   <div class='table-responsive'>
-    <table id='tblInforme' class='table align-middle'>
+    <table id='tblInforme' class='table align-middle table-striped'>
       <thead>
         <tr>
           <th>Descripción</th>
           <th>Categoría</th>
           <th>Subcategoría</th>
           <th>Estado</th>
-          <th>Fecha</th>
+          <th>Desde ~ Hasta </th>
         </tr>
       </thead>
       <tbody id='bodyTabla'></tbody>

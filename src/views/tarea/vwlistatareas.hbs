@@ -1,28 +1,29 @@
 <link rel='stylesheet' href='/css/styles.listatareas.css' />
+<link rel='stylesheet' href='/css/styles.floatingbuttons.css' />
+<input id='inpView' type='hidden' value='viewHome' />
 
-<h1>VISTA TAREAS <i class='bx bxs-notepad'></i></h1>
-
-<div class='container d-flex justify-content-center'>
-  <div style='width: 200px;'>
-    <label for='selFiltroEstado' class='form-label'><i class='bx bxs-filter-alt'></i> Elije un estado</label>
-    <select id='selFiltroEstado' class='form-select' aria-label='Default select example'>
-      <option selected value='All'>All</option>
-      <option value='Doing'>Doing</option>
-      <option value='To Do'>To Do</option>
-      <option value='Done'>Done</option>
-    </select>
-  </div>
+<div class='title-page'>
+  <p>Mis tareas</p>
 </div>
 
 {{#if hayTareas}}
 
   <div id='contCardTareas'>
     <div class='container'>
+
+      <div class='row' style='margin-top: 1rem;'>
+        <div class='col-sm-12 col-md-6 d-flex flex-column'>
+          <p style='letter-spacing: 2px;'>🎃 <span id='phraseRandom'></span></p>
+        </div>
+
+        <div class='col-sm-12 col-md-6 d-flex flex-column'>
+          <p style='text-align: end; font-size: 1.2rem;'><span class='rainbow-text'>Tareas totales {{cantTareasTotales}}</span></p>
+        </div>
+      </div>
+
       <div class='row'>
 
         <div class='col-sm-12 d-flex flex-column'>
-          <p style='margin-top: 1rem; text-align: center'>😃 Hay {{cantTareas}} tarea(s) en la app.</p>
-          <p style='text-align: center;'>🎃 <span id='phraseRandom'></span></p>
         </div>
 
         {{#each arrObjData}}
@@ -49,17 +50,17 @@
       </div>
     </div>
 
-    <div class='container'>
+    <div class='container mt-3'>
       <div class='d-flex justify-content-center'>
         <nav aria-label='Page navigation example'>
           <ul class='pagination'>
             <li id='btnBackPag' class='page-item'>
-              <a class='page-link' href='#' tabindex='-1' aria-disabled='true'><i class='bx bx-chevron-left' style='font-size: 1.5rem'></i></a>
+              <a class='page-link' href='#' tabindex='-1' aria-disabled='true'><i class='bx bx-chevron-left' style='font-size: 1.99rem'></i></a>
             </li>
             {{#each arrPaginacion}}
               <li id='pag{{this}}' class='page-item page-item-num'><a class='page-link' href='/tarea/lista/{{this}}'>{{this}}</a></li>
             {{/each}}
-            <li id='btnNextPag' class='page-item'><a class='page-link' href='#'><i class='bx bx-chevron-right' style='font-size: 1.5rem'></i></a></li>
+            <li id='btnNextPag' class='page-item'><a class='page-link' href='#'><i class='bx bx-chevron-right' style='font-size: 1.99rem'></i></a></li>
           </ul>
         </nav>
       </div>
@@ -73,11 +74,102 @@
   No hay tareas pe
 {{/if}}
 
+<!-- Modal -->
+<div class='modal fade' id='modalFiltro' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='exampleModalLabel'>Elije tus filtros</h5>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+
+        <div class='cont_filtro'>
+
+          <div class='d-flex justify-content-between'>
+            <label class='form-check-label' for='btnToggleEstado'>Estado</label>
+            <div class='form-check form-switch'>
+              <input id='btnToggleEstado' class='form-check-input' type='checkbox' />
+            </div>
+          </div>
+
+          <div id='contFiltroEstado' class='cont_filtro__box display_none'>
+            <select id='selFiltroEstado' class='form-select' aria-label='Default select example'>
+              <option value='' disabled selected>Selecciona un estado</option>
+              <option value='Doing'>Doing</option>
+              <option value='To Do'>To Do</option>
+              <option value='Done'>Done</option>
+            </select>
+          </div>
+        </div>
+
+        <div class='cont_filtro'>
+          <div class='d-flex justify-content-between'>
+            <label class='form-check-label' for='btnToggleRangoFechas'>Rango de Fechas (fin)</label>
+            <div class='form-check form-switch'>
+              <input id='btnToggleRangoFechas' class='form-check-input' type='checkbox' />
+            </div>
+          </div>
+
+          <div id='contFiltroFechas' class='cont_filtro__box display_none'>
+            <div class='row'>
+              <div class='col-sm-12 col-md-6'>
+                <label for='inpFechaInicio' class='form-label'>Desde</label>
+                <input id='inpFechaInicio' type='date' class='form-control' placeholder='Descripción' />
+              </div>
+
+              <div class='col-sm-12 col-md-6'>
+                <label for='inpFechaFin' class='form-label'>Hasta</label>
+                <input id='inpFechaFin' type='date' class='form-control' placeholder='Descripción' />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='cont_filtro'>
+          <div class='d-flex justify-content-between'>
+            <label class='form-check-label' for='btnToggleCategorias'>Categorías</label>
+            <div class='form-check form-switch'>
+              <input id='btnToggleCategorias' class='form-check-input' type='checkbox' />
+            </div>
+          </div>
+
+          <div id='contFiltroCategoria' class='cont_filtro__box display_none'>
+            <select id='selFiltroCategoria' class='form-select' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona una categoría</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+      <div class='modal-footer'>
+        <button id='btnFiltrar' type='button' class='btn btn-primary'>Filtrar <i class='bx bxs-filter-alt'></i></button>
+        <button id='btnQuitarFiltros' type='button' class='btn' style='background-color: #cd87c9;' data-bs-dismiss='modal'>Quitar filtros <i class='bx bxs-brush-alt'></i></button>
+        <button type='button' class='btn' style='background-color: #b7b1b1;' data-bs-dismiss='modal'>Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src='/js/tarea/vwlistatareasFiltro.js'></script>
+<script src='/js/tarea/floatingButtonsList.js'></script>
 
 <div class='cont_btn_floating'>
-  <button class='icon-btn add-btn' onclick="location.href='/tarea/agregar'">
-    <div class='add-icon'></div>
-    <div class='btn-txt' style='font-size: .8rem; color: #fff'>(づ￣ 3￣)づ</div>
-  </button>
+  <div class='buttons-list'>
+    <div class='btn-toggle-list'>
+      <span class='btn-dot display_none'></span>
+    </div>
+    <div class='items-list'>
+      <ul>
+        <li style='--i:0.1s'>
+          <a class='btn' data-bs-toggle='modal' data-bs-target='#modalFiltro'>
+            <i class='bx bxs-filter-alt'></i>
+          </a>
+          <span id='dotFiltro' class='btn-dot display_none'>3</span>
+        </li>
+        <li style='--i:0.2s'><a href='/tarea/agregar'><i class='bx bxs-message-square-add'></i></a></li>
+      </ul>
+    </div>
+
+  </div>
 </div>

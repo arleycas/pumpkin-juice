@@ -13,10 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
         [5, 10, 25, 50, -1],
         [5, 10, 25, 50, 'All'],
       ],
+      columns: [
+        { "width": "50%" },
+        null,
+        null,
+        null,
+        null
+      ],
       buttons: [
         {
           extend: 'excelHtml5',
-          text: 'EXCEL',
+          text: `Excel <i class='bx bxs-download' ></i>`,
           titleAttr: 'Exportar a Excel',
           className: 'green darken-4',
         },
@@ -43,8 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   getData('/tarea/getYears')
     .then(res => {
-      console.log(res);
-
+      // console.log(res);
       let listaAnos = '';
       res.forEach(ano => {
         listaAnos += `<option value='${ano}'>${ano}</option>`;
@@ -56,8 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   getData('/tarea/getMonths')
     .then(res => {
-      console.log(res);
-
+      // console.log(res);
       let listaMeses = '';
       res.forEach(obj => {
         listaMeses += `<option value='${obj.num}'>${obj.nombre}</option>`;
@@ -69,32 +74,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnBuscar.addEventListener('click', (e) => {
     cargarLoader();
+    cleanFeedbacks();
 
     postData('/tarea/getTareasInforme', { ano: selAno.value, mes: selMes.value })
       .then(res => {
-        console.log('res fechas xd', res);
+        proccessResponse({
+          res, inCaseValid: () => {
 
-        if (res) {
+            console.log('Si entra');
+            if (res) {
+              let contenidoTabla = '';
 
-          let contenidoTabla = '';
+              res.data.forEach(obj => {
+                contenidoTabla += `
+                <tr>
+                  <td>${obj.descripcion}</td>
+                  <td>${obj.categoria}</td>
+                  <td>${obj.subcategoria}</td>
+                  <td>${obj.estado}</td>
+                  <td>${beautyDate(obj.fechaDesde)} ~ ${beautyDate(obj.fechaHasta)}</td>
+                </tr>
+                `;
+              });
 
-          res.forEach(obj => {
-            contenidoTabla += `
-            <tr>
-              <td>${obj.descripcion}</td>
-              <td>${obj.categoria}</td>
-              <td>${obj.subcategoria}</td>
-              <td>${obj.estado}</td>
-              <td>${beautyDate(obj.fecha)}</td>
-            </tr>
-            `;
-          });
-
-          tblInforme.destroy();
-          bodyTabla.innerHTML = contenidoTabla;
-          tblInforme = new DataTable('#tblInforme', configDatatable);
-          ocultarLoader();
-        }
+              tblInforme.destroy();
+              bodyTabla.innerHTML = contenidoTabla;
+              tblInforme = new DataTable('#tblInforme', configDatatable);
+              ocultarLoader();
+            }
+          }
+        });
+        ocultarLoader();
       });
   });
 

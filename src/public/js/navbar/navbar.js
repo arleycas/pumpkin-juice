@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const view = inpView.value;
 
     if (view === 'viewHome') document.querySelector('#itemHome').classList.add('active');
+    if (view === 'viewEditTarea') document.querySelector('#itemHome').classList.add('active');
     if (view === 'viewInforme') document.querySelector('#itemInforme').classList.add('active');
     if (view === 'viewAddCate') document.querySelector('#itemAddCate').classList.add('active');
     if (view === 'viewEditCate') document.querySelector('#itemEditCate').classList.add('active');

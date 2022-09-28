@@ -131,7 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         '12': 'Dic',
       };
 
-    return `${objMonth[month]} ${day} de ${year}`;
+    return `${objMonth[month]} ${day}/${year.slice(-2)}`;
   }
 
 

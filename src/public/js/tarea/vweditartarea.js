@@ -9,12 +9,13 @@ document.addEventListener('DOMContentLoaded', () => {
     selCategoria = document.querySelector('#selCategoria'),
     selSubcategoria = document.querySelector('#selSubcategoria'),
     btnEditar = document.querySelector('#btnEditar');
-  let objDataOriginal = {}
+  let
+    objDataOriginal = {},
+    pagPrevia = null;
 
   postData('/tarea/getTarea', { idTarea: inpIdTarea.value })
     .then(res => {
-      console.log(res);
-
+      // console.log(res);
       const
         descripcion = res.descripcion,
         estado = res.estado,
@@ -48,8 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           postData('/categoria/get-categoria', { idCategoria })
             .then(res => {
-              console.log('esto traigoo', res);
-
+              // console.log('esto traigoo', res);
               if (res) {
                 const arrSubcategorias = res.subcategoria;
 
@@ -65,6 +65,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // formato que acepta input de fecha: '2022-04-12'
     });
+
+  if (window.location.search) {
+    const
+      queryString = window.location.search,// retorna algo como '?pagPrevia=1'
+      urlParams = new URLSearchParams(queryString); // guarda todas las variables de la URL
+    pagPrevia = urlParams.get('pagPrevia'); // se setea
+  }
 
   selCategoria.addEventListener('change', (e) => {
     const idCategoria = e.target.value;
@@ -93,29 +100,14 @@ document.addEventListener('DOMContentLoaded', () => {
       idSubcategoria: selSubcategoria.value,
     }
 
-    // TODO, esto deberia ir en el backend
-    // const arrObjData = Object.keys(objDataOriginal);
-    // arrObjData.forEach(key => {
-    //   if (objDataOriginal[key] !== objDataNueva[key]) {
-    //     objDataEnviar[key] = objDataNueva[key]
-    //   }
-    // });
-
     postData('/tarea/editar', { idTarea: inpIdTarea.value, objDataOriginal, objDataNueva })
       .then(res => {
         console.log(res);
 
         proccessResponse({
           res,
-          inCaseValid: () => { window.location.href = '' }
+          inCaseValid: () => { window.location.href = `/tarea/lista/${pagPrevia}?anicard=${inpIdTarea.value}` }
         });
-
-        // if (res) {
-        //   Toast.fire({
-        //     icon: 'success',
-        //     title: `Tarea actualizada!`,
-        //   });
-        // }
       });
   });
 

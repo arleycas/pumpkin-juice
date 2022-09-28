@@ -153,7 +153,8 @@ window.getRandomNaniPhrase = () => {
     'Es un hecho, Bogotá queda a 3 horas de Bogotá 😪',
     'Arlita y Nano... a no asi no era',
     'Pecadito andante 🥺',
-    'Mira mira! un popodrilo 🐊'
+    'Mira mira! un popodrilo 🐊',
+    'Es verdad que el amor es como el papel higienico 🧻?...'
   ]
 
   const

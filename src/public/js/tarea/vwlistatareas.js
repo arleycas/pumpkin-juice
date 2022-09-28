@@ -37,6 +37,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
+    // * pone pagina actual en botones de editar tarea, para que se envie a la página de edición
+    document.querySelectorAll('.btn_edit').forEach(btn => {
+      // console.log(btn);
+      btn.href += `?pagPrevia=${nPagActual}`;
+    });
+
     // * gestiona el nav de paginación (botones next y back)
     btnPage.classList.add('active');
     btnBackPag.querySelector('a').href = `/tarea/lista/${nPagBack}`;

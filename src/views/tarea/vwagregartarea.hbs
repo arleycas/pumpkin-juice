@@ -7,44 +7,57 @@
   <div class='row justify-content-md-center'>
     <div class='col col-sm-12 col-md-6'>
 
-      <div class='card p-3'>
-        <form action=''>
-          <label for='inpDescripcion' class='form-label'>Texto descripción</label>
-          <textarea id='inpDescripcion' class='form-control fitem' rows='3'></textarea>
-          <div id='feedBackDescripcion' class='feedback_box'></div>
+      <div class='card p-3 card_form mt-4'>
+        <form class='row' action=''>
 
-          <label for='selCategoria' class='form-label'>Selecciona una categoria</label>
-          <select id='selCategoria' class='form-select fitem' aria-label='Default select example'>
-            <option selected value='' disabled>Selecciona una categoría</option>
-          </select>
-          <div id='feedBackCategoria' class='feedback_box'></div>
+          <div class='col-sm-12 mb-3'>
+            <label for='inpDescripcion' class='form-label'>Texto descripción</label>
+            <textarea id='inpDescripcion' class='form-control fitem' rows='3'></textarea>
+            <div id='feedBackDescripcion' class='feedback_box'></div>
+          </div>
 
-          <label for='selSubcategoria' class='form-label'>Selecciona una subcategoria</label>
-          <select id='selSubcategoria' class='form-select fitem' aria-label='Default select example'>
-            <option selected value='' disabled>Selecciona una subcategoría</option>
-          </select>
-          <div id='feedBackSubcategoria' class='feedback_box'></div>
+          <div class='col-sm-12 col-md-6 mb-3'>
+            <label for='selCategoria' class='form-label'>Selecciona una categoria</label>
+            <select id='selCategoria' class='form-select fitem' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona una categoría</option>
+            </select>
+            <div id='feedBackCategoria' class='feedback_box'></div>
+          </div>
 
-          <label for='selEstado' class='form-label'>Selecciona una estado</label>
-          <select id='selEstado' class='form-select' aria-label='Default select example'>
-            <option selected value='' disabled>Selecciona estado</option>
-            <option value='Doing'>Doing</option>
-            <option value='To Do'>To Do</option>
-            <option value='Done'>Done</option>
-          </select>
-          <div id='feedBackEstado' class='feedback_box'></div>
+          <div class='col-sm-12 col-md-6 mb-3'>
+            <label for='selSubcategoria' class='form-label'>Selecciona una subcategoria</label>
+            <select id='selSubcategoria' class='form-select fitem' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona una subcategoría</option>
+            </select>
+            <div id='feedBackSubcategoria' class='feedback_box'></div>
+          </div>
 
-          <label for='inpFechaDesde' class='form-label'>Desde</label>
-          <input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
-          <div id='feedBackFechaDesde' class='feedback_box'></div>
+          <div class='col-sm-12 col-md-6 mb-3'>
+            <label for='inpFechaDesde' class='form-label'>Desde</label>
+            <input id='inpFechaDesde' type='date' class='form-control' placeholder='Descripción' />
+            <div id='feedBackFechaDesde' class='feedback_box'></div>
+          </div>
 
-          <label for='inpFechaHasta' class='form-label'>Hasta</label>
-          <input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
-          <div id='feedBackFechaHasta' class='feedback_box'></div>
+          <div class='col-sm-12 col-md-6 mb-3'>
+            <label for='inpFechaHasta' class='form-label'>Hasta</label>
+            <input id='inpFechaHasta' type='date' class='form-control' placeholder='Descripción' />
+            <div id='feedBackFechaHasta' class='feedback_box'></div>
+          </div>
+
+          <div class='col-sm-12 col-md-6 mb-3'>
+            <label for='selEstado' class='form-label'>Selecciona un estado</label>
+            <select id='selEstado' class='form-select' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona estado</option>
+              <option value='Doing'>Doing</option>
+              <option value='To Do'>To Do</option>
+              <option value='Done'>Done</option>
+            </select>
+            <div id='feedBackEstado' class='feedback_box'></div>
+          </div>
 
           <div class='d-flex justify-content-center'>
             <button id='btnAtras' type='button' class='btn btn-light' onclick='history.back()' style='margin: 1rem;'> <i class='bx bx-arrow-back'></i> Atrás</button>
-            <button id='btnNuevaTarea' type='button' class='btn btn-primary' style='margin: 1rem;'>Agregar</button>
+            <button id='btnNuevaTarea' type='button' class='btn btn-primary' style='margin: 1rem;'>Agregar <i class='bx bxs-dog bx-tada'></i></button>
           </div>
         </form>
       </div>

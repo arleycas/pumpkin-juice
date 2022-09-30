@@ -1,7 +1,7 @@
 .feedback_box {
-  color: red;
+  color: #df6700;
 }
 
 .inp_invalid {
-  border: 2px solid red;
+  border: 2px solid #df6700;
 }

@@ -48,6 +48,7 @@ app.use((req, res, next) => {
   app.locals.messageInfo = req.flash('messageInfo');
   app.locals.messageWarning = req.flash('messageWarning');
   app.locals.messageError = req.flash('messageError');
+  app.locals.user = req.user;
   next();
 });
 
@@ -68,6 +69,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, '../node_modules/boxicons/')));
 app.use(express.static(path.join(__dirname, '../node_modules/sweetalert2/dist')));
 
-
+// * error
+app.use((req, res) => {
+  res.status(404).render('error/err404', { title: 'Error 404' });
+});
 
 export default app;

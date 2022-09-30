@@ -7,42 +7,57 @@
 <div class='container'>
   <div class='row justify-content-md-center'>
     <div class='col col-sm-12 col-md-6'>
+      <div class='card p-3 card_form mt-4'>
+        <form class='row mb-5' action=''>
 
-      <div class='card p-3'>
-        <form action=''>
-          <label for='selConfigCategoria' class='form-label'>Listado de categorias</label>
+          <div class='col-8'>
+            <label for='selConfigCategoria' class='form-label'>Listado de categorias</label>
+            <select id='selConfigCategoria' class='form-select' aria-label='Default select example'>
+              <option selected value='' disabled>Selecciona una categoría</option>
+            </select>
+            <div id='feedBackConfigCategoria' class='feedback_box'></div>
+          </div>
 
-          <select id='selConfigCategoria' class='form-select' aria-label='Default select example'>
-            <option selected value='' disabled>Selecciona una categoría</option>
-          </select>
-          <div id='feedBackConfigCategoria' class='feedback_box'></div>
+          <div class='col-2 d-flex justify-content-center align-items-end'>
+            {{! Si le dan editar se cambian todas los nombres de categorias que tengan las tareas por el nuevo nombre de categoria que le pongan }}
+            {{! Si le dan editar se cambian todas los nombres de categorias que tengan las subcategorias por el nuevo nombre de categoria que le pongan }}
+            <button id='btnEditarCategoria' type='button' class='btn btn-primary' style='font-size: 1.5rem;' disabled><i class='bx bxs-edit'></i></button>
+          </div>
 
-          {{! Si le dan editar se cambian todas los nombres de categorias que tengan las tareas por el nuevo nombre de categoria que le pongan }}
-          {{! Si le dan editar se cambian todas los nombres de categorias que tengan las subcategorias por el nuevo nombre de categoria que le pongan }}
-          <button id='btnEditarCategoria' type='button' class='btn btn-primary' disabled>Editar</button>
-          {{! Se elimina la categoria con todas sus subcategorias }}
-          <button id='btnEliminarCategoria' type='button' class='btn btn-primary' disabled>Eliminar</button>
+          <div class='col-2 d-flex justify-content-center align-items-end'>
+            {{! Se elimina la categoria con todas sus subcategorias }}
+            <button id='btnEliminarCategoria' type='button' class='btn btn-primary' style='font-size: 1.5rem' disabled><i class='bx bxs-trash-alt'></i></button>
+          </div>
 
-          {{! Si le pongo un botón de eliminar que pasa con las tareas que tengan esta categoría? }}
         </form>
 
         <div id='contListado' class='display_none'>
-          <h3>Listado de subcategorias</h3>
-          {{! TODO que se pueda agregar subcategorias desde este apartado }}
-          <button id='btnAgregarSubcategoria' type='button' class='btn btn-primary'>Agregar subcategoria</button>
-          <table id='tableSubcategorias' class='table'>
-            <thead>
-              <tr>
-                <th scope='col'>Subcategoría</th>
-                <th scope='col'>Editar</th>
-                <th scope='col'>Eliminar</th>
-                <!-- Si se elimina ¿poner 'subcategoría eliminada' en tareas?'-->
-              </tr>
-            </thead>
-            <tbody id='bodyTableSubcategorias' class=''>
+          <div class='row mb-2'>
+            <div class='col-6 d-flex justify-content-center align-items-center'>
+              <h6><i class='bx bx-chevron-down'></i> Subcategorias de <span id='titleDeSubcat' style='font-size: 1.2rem; font-weight: bold; color: #7066e0;'></span></h6>
+            </div>
 
-            </tbody>
-          </table>
+            <div class='col-6 d-flex justify-content-center align-items-center'>
+              <button id='btnAgregarSubcategoria' type='button' class='btn' style='background-color: #7066e0;'>Add new <i class='bx bx-list-plus' style='font-size: 1rem;'></i></button>
+            </div>
+          </div>
+          {{! TODO que se pueda agregar subcategorias desde este apartado }}
+
+          <div class='table-style'>
+            <table id='tableSubcategorias' class='table'>
+              <thead>
+                <tr>
+                  <th scope='col'>Subcategoría</th>
+                  <th scope='col'>Editar</th>
+                  <th scope='col'>Eliminar</th>
+                  <!-- Si se elimina ¿poner 'subcategoría eliminada' en tareas?'-->
+                </tr>
+              </thead>
+              <tbody id='bodyTableSubcategorias' class=''>
+
+              </tbody>
+            </table>
+          </div>
         </div>
 
       </div>

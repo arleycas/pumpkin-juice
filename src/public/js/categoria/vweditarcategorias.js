@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', () => {
             bodyTableSubcategorias.innerHTML += `
               <tr>
                 <th scope='row'>${subcategoria.nombre}</th>
-                <td><button type='button' class='btn btn-primary btn_abrir_editor_subcategoria' data-idcat='${res._id}' data-idsubcat='${subcategoria._id}' data-value='${subcategoria.nombre}'>Editar</button></td>
-                <td><button type='button' class='btn btn-primary btn_eliminar_subcategoria' data-idcat='${res._id}' data-idsubcat='${subcategoria._id}' data-nombre='${subcategoria.nombre}'>Eliminar</button></td>
+                <td><button type='button' class='btn btn_abrir_editor_subcategoria' data-idcat='${res._id}' data-idsubcat='${subcategoria._id}' data-value='${subcategoria.nombre}'><i class="bx bxs-edit" style='color: #7066e0; font-size: 1.3rem'></i></button></td>
+                <td><button type='button' class='btn btn_eliminar_subcategoria' data-idcat='${res._id}' data-idsubcat='${subcategoria._id}' data-nombre='${subcategoria.nombre}'><i class="bx bxs-trash-alt" style='color: #7066e0; font-size: 1.3rem'></i></button></td>
               </tr>
               `;
           });
@@ -49,13 +49,14 @@ document.addEventListener('DOMContentLoaded', () => {
         contListado.classList.remove('display_none');
         btnEditarCategoria.disabled = false;
         btnEliminarCategoria.disabled = false;
+        document.querySelector('#titleDeSubcat').innerHTML = selConfigCategoria.options[selConfigCategoria.selectedIndex].text;
       });
 
   });
 
   btnEditarCategoria.addEventListener('click', (e) => {
 
-    console.log(selConfigCategoria.options[selConfigCategoria.selectedIndex]);
+    // console.log(selConfigCategoria.options[selConfigCategoria.selectedIndex]);
     const
       idCategoria = selConfigCategoria.value,
       categoriaVieja = selConfigCategoria.options[selConfigCategoria.selectedIndex].text;
@@ -192,6 +193,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    // ** en caso de que le den click al icono dentro de botón editar
+    if (e.target && e.target.tagName === 'I') {
+      const padre = e.target.parentElement;
+      if (padre.classList.contains('btn_abrir_editor_subcategoria')) {
+        padre.click();
+      }
+    }
+
     if (e.target && e.target.classList.contains('btn_eliminar_subcategoria')) {
 
       const
@@ -225,6 +234,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
       });
+    }
+
+    // ** en caso de que le den click al icono dentro de botón editar
+    if (e.target && e.target.tagName === 'I') {
+      const padre = e.target.parentElement;
+      if (padre.classList.contains('btn_eliminar_subcategoria')) {
+        padre.click();
+      }
     }
 
   });

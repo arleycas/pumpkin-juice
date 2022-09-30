@@ -6,6 +6,42 @@ body {
   background-color: #fafafa;
 }
 
+.txt-error-404 {
+  margin: 2rem;
+  text-align: center;
+  color: #444;
+  text-shadow: 
+    1px 0px 1px #ccc, 0px 1px 1px #eee, 
+    2px 1px 1px #ccc, 1px 2px 1px #eee,
+    3px 2px 1px #ccc, 2px 3px 1px #eee,
+    4px 3px 1px #ccc, 3px 4px 1px #eee,
+    5px 4px 1px #ccc, 4px 5px 1px #eee,
+    6px 5px 1px #ccc, 5px 6px 1px #eee,
+    7px 6px 1px #ccc;
+}
+
+.gohome {
+  background: #e8a335;
+  font-family: inherit;
+  padding: 0.6em 1.3em;
+  font-weight: 900;
+  font-size: 18px;
+  border: 3px solid black;
+  border-radius: 10px;
+  box-shadow: 0.1em 0.1em;
+}
+
+.gohome:hover {
+  transform: translate(-0.05em, -0.05em);
+  box-shadow: 0.15em 0.15em;
+}
+
+.gohome:active {
+  transform: translate(0.05em, 0.05em);
+  box-shadow: 0.05em 0.05em;
+}
+
+
 .title-page {
   display: flex;
   align-items: center;
@@ -40,14 +76,16 @@ body {
 }
 
 .option_list_box {
-  border: 1px solid;
-  border-radius: .375rem 0.75rem;
+  /* border: 1px solid; */
+  /* border-radius: .375rem 0.75rem; */
+  border-radius: 10px !important;
   overflow: hidden;
   position: absolute;
   top: 100%;
   width: 100%;
   background-color: white;
   z-index: 1000;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.3);
 }
 
 .option_item{
@@ -56,15 +94,18 @@ body {
 }
 
 .option_item:hover {
-  background-color: aquamarine;
+  background-color: #ffe7bf;
   cursor: pointer;
 }
 
 .item_selected {
-  background-color: aquamarine;
+  background-color: #ffe7bf;
 }
 
 /** FORMS */
+.card_form {
+  border-radius: 10px;
+}
 
 .inp_x {
   border-right: none;
@@ -112,4 +153,45 @@ body {
   50% {
       background-position: 100% 0;
   }
+}
+
+/* * scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del thumb */
+::-webkit-scrollbar-thumb {
+  background: #E97424;
+  border-radius: 4px;
+}
+
+/* Cambiamos el fondo y agregamos una sombra cuando esté en hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #e8a335;
+  box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+/* Cambiamos el fondo cuando esté en active */
+::-webkit-scrollbar-thumb:active {
+  background-color: #e8a335;
+}
+
+/* Ponemos un color de fondo y redondeamos las esquinas del track */
+::-webkit-scrollbar-track {
+  background: #e1e1e1;
+  border-radius: 4px;
+}
+
+/* Cambiamos el fondo cuando esté en active o hover */
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active {
+background: #d4d4d4;
+}
+
+/* * tablas datatables */
+.table-style {
+  border: 1px solid #efddbd;
+  border-radius: 10px;
+  padding: 1rem;
 }

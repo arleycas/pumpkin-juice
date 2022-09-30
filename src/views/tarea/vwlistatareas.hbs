@@ -29,7 +29,7 @@
         {{#each arrObjData}}
 
           {{! todo, los estilos pasar a un css luego }}
-          <div class='col-sm-12 col-md-6'>
+          <div class='col-sm-12'>
             <div class='card animate__animated' id='cardId{{this._id}}' style='margin-bottom: 1rem;'>
               <div class='card-body'>
                 <p id='est{{this._id}}'><i class='{{this.classIcon}}' style='color: {{this.colorIcon}}'></i> {{this.estado}}</p>
@@ -37,6 +37,7 @@
                 <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat{{this._id}}'>{{this.categoria}}</span></div>
                 <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub{{this._id}}'>{{this.subcategoria}}</span></div>
                 <p style='margin-top: 1rem;'><i class='bx bxs-calendar'></i> {{this.fechaDesde}} ~ {{this.fechaHasta}}</p>
+                <b style='color: rgb(255, 145, 0);'>fecha creacion tarea (dia en el que se agregó): {{this.fechaCreacion}}</b>
 
                 <div class='d-flex justify-content-end'>
                   <a href='/tarea/editar/{{this._id}}' class='btn card__btn btn_edit' tabindex='-1' role='button'><i class='bx bxs-edit'></i></a>

@@ -115,16 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.location.href = `?${queryURL}`;
 
   });
-  // selFiltroEstado.addEventListener('change', (e) => {
-  //   const estadoSelect = e.target.value;
-  //   console.log(estadoSelect);
-
-  //   if (estadoSelect === 'All') {
-  //     window.location.href = '/tarea/lista/1'
-  //     return;
-  //   }
-  //   window.location.href = `?estado=${estadoSelect}`;
-  // });
 
   if (window.location.search) {
     // * configura el modal de filtros, para que se pongan los que envió el usuario al backend
@@ -217,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnQuitarFiltros.addEventListener('click', (e) => {
-    window.location.href = '/tarea/lista/1'
+    window.location.href = '/tarea/lista'
     return;
   });
 

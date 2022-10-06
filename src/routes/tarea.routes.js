@@ -10,26 +10,13 @@ const router = Router();
 
 // ** TAREAS
 
-router.get('/', (req, res) => {
-  res.render('index')
-});
-
 // render
-router.get('/lista/:pag', async (req, res) => {
+router.get('/lista', async (req, res) => {
   try {
-    const
-      nDocumentos = await Tarea.count(), // 1. trae la cantidad de documentos (Tarea) que existen
-      pag = req.params.pag;
+    let cantTareas = await Tarea.count(); // 1. trae la cantidad de documentos (Tarea) que existen
 
-    if (nDocumentos) {
-
-      let arrPaginacion = getArrayPagination({ nDocumentos });
-
-      const skipDocs = parseInt(`${pag - 1}0`); // ej si el user pide la pag 3 -> se resta 1 queda en 2 -> se le agrega 0 queda en 20, la consulta va a saltar 20 documentos ya que los de la página 3 son los documentos 21 al 30
-
-      // * filtro ------------------------------------------
+    if (cantTareas) {
       // no hago la validación de data backend porque como son peticiones sincronas me queda mas facil con flash
-
       let arrObjTareas = null;
       let objFiltro = {};
       const objQueryURL = req.query;
@@ -47,23 +34,20 @@ router.get('/lista/:pag', async (req, res) => {
 
           objFiltro = {
             'desdeHasta.1': {
-              $gte: new Date(fechaInicio),
-              $lt: new Date(fechaFin)
+              $gte: new Date(`${fechaInicio}T00:00:00`),
+              $lt: new Date(`${fechaFin}T23:59:59`)
             }
           };
         }
 
         if (objQueryURL.hasOwnProperty('categoria')) objFiltro.categoria = objQueryURL.categoria.trim()
-        // console.log('asi queda efiltro', objFiltro);
-        // arrObjTareas = await Tarea.find(objFiltro).sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean(); // Las tareas mas viejas van a apareciendo de primeras
 
-        const nDocumentosFiltrados = await Tarea.find(objFiltro).count();
-        arrPaginacion = getArrayPagination({ nDocumentos: nDocumentosFiltrados }); // se modifica paginación ya que hay filtros
-        arrObjTareas = await Tarea.find(objFiltro).sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean(); // Las tareas mas viejas van a apareciendo de primeras
+        cantTareas = await Tarea.find(objFiltro).count();
+        arrObjTareas = await Tarea.find(objFiltro).sort({ createdAt: 'descending' }).lean(); // Las tareas mas viejas van a apareciendo de primeras
       }
 
       if (Object.keys(objQueryURL).length === 0) { // no hay filtros
-        arrObjTareas = await Tarea.find().sort({ createdAt: 'descending' }).skip(skipDocs).limit(10).lean();
+        arrObjTareas = await Tarea.find().sort({ createdAt: 'descending' }).lean();
       }
 
       // * Si no hay tareas se envia false
@@ -71,7 +55,6 @@ router.get('/lista/:pag', async (req, res) => {
         res.render('tarea/vwlistatareas', { title: 'Lista tareas', hayTareas: false });
       }
 
-      // console.log(arrObjTareas.length, arrObjData.length);
       //1. Se traen todas las tareas (pero como cada tarea tiene en cat y sub tiene es un código en vez de un nombre toca hacer un consulta para saber ese codigo que significa)
       let arrObjData = [];
       arrObjTareas.forEach(async obj => {
@@ -80,14 +63,6 @@ router.get('/lista/:pag', async (req, res) => {
           idCategoria = obj.categoria,
           idSubcatTarea = obj.subcategoria,
           objCategoria = await Categoria.findOne({ _id: idCategoria }).lean();
-
-        // console.log('busca', objCategoria);
-
-        // console.log('OBJETIFICADO!!!!', objCategoria);
-
-        // console.log('esto', obj.subcategoria);
-        // console.log('esto otro', objCategoria.subcategoria[0]._id.toString());
-        // console.log('sirve?',);
 
         const dicEstadoIcon = {
           'Doing': { color: '#c99941', class: 'bx bxs-cog bx-spin' },
@@ -110,7 +85,7 @@ router.get('/lista/:pag', async (req, res) => {
 
 
         if (arrObjTareas.length === arrObjData.length) {
-          res.render('tarea/vwlistatareas', { title: 'Lista tareas', arrObjData, arrPaginacion, hayTareas: true, cantTareasTotales: nDocumentos });
+          res.render('tarea/vwlistatareas', { title: 'Lista tareas', arrObjData, hayTareas: true, cantTareas });
         }
 
         // console.log(arrObjCategorias);
@@ -203,12 +178,37 @@ router.post('/getTarea', async (req, res) => {
 
   // console.log('idTareaaaa', idTarea);
   try {
+    // * raw
     const tarea = await Tarea.findById(idTarea).lean(); // lean lo trae al objeto en POJO (Plain old JavaScript objects), lo cual es más rapido y el HBS lo lee bien
     // con exec, trae el objeto ese de mongoose
-    res.json(tarea);
+
+    // * cooked (procesado)
+    const
+      idCategoria = tarea.categoria,
+      idSubcatTarea = tarea.subcategoria,
+      objCategoria = await Categoria.findOne({ _id: idCategoria }).lean(),
+      dicEstadoIcon = {
+        'Doing': { color: '#c99941', class: 'bx bxs-cog bx-spin' },
+        'To Do': { color: '#c94173', class: 'bx bxs-hourglass bx-tada' },
+        'Done': { color: '#043206', class: 'bx bx-check bx-flashing' }
+      },
+      procesado = {
+        _id: tarea._id,
+        descripcion: tarea.descripcion,
+        estado: tarea.estado,
+        colorIcon: dicEstadoIcon[tarea.estado].color,
+        classIcon: dicEstadoIcon[tarea.estado].class,
+        categoria: objCategoria ? objCategoria.categoria : 'No existe categoría',
+        subcategoria: objCategoria ? getNombreSubcategoria({ arrSubcat: objCategoria.subcategoria, idSubcatTarea }) : 'No existe subcategoria',
+        fechaDesde: Commons.beautyDate(tarea.desdeHasta[0]),
+        fechaHasta: Commons.beautyDate(tarea.desdeHasta[1]),
+        fechaCreacion: Commons.beautyDate(tarea.createdAt)
+      };
+
+    res.json({ raw: tarea, cooked: procesado });
 
   } catch (error) {
-    console.log('Error', err);
+    console.log('Error', error);
   }
 });
 

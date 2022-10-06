@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         proccessResponse({
           res, inCaseValid: () => {
             // se envia id de la tarea para que sea animada como nueva tarea
-            window.location.href = `/tarea/lista/1?anicard=${res.idTarea}`;
+            window.location.href = `/tarea/lista?anicard=${res.idTarea}`;
           }
         });
       });

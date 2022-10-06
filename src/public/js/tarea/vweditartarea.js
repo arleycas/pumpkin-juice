@@ -17,12 +17,13 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(res => {
       // console.log(res);
       const
-        descripcion = res.descripcion,
-        estado = res.estado,
-        fechaDesde = res.desdeHasta[0] ? res.desdeHasta[0].split('T')[0] : '',
-        fechaHasta = res.desdeHasta[1] ? res.desdeHasta[1].split('T')[0] : '',
-        idCategoria = res.categoria,
-        idSubcategoria = res.subcategoria;
+        resTarea = res.raw,
+        descripcion = resTarea.descripcion,
+        estado = resTarea.estado,
+        fechaDesde = resTarea.desdeHasta[0] ? resTarea.desdeHasta[0].split('T')[0] : '',
+        fechaHasta = resTarea.desdeHasta[1] ? resTarea.desdeHasta[1].split('T')[0] : '',
+        idCategoria = resTarea.categoria,
+        idSubcategoria = resTarea.subcategoria;
 
       inpDescripcion.value = descripcion;
       selEstado.value = estado;

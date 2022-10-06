@@ -17,65 +17,45 @@
         </div>
 
         <div class='col-sm-12 col-md-6 d-flex flex-column'>
-          <p style='text-align: end; font-size: 1.2rem;'><span class='rainbow-text'>Tareas totales {{cantTareasTotales}}</span></p>
+          <p style='text-align: end; font-size: 1.2rem;'><span class='rainbow-text'>Tareas {{cantTareas}}</span></p>
         </div>
       </div>
 
       <div class='row'>
 
-        <div class='col-sm-12 d-flex flex-column'>
-        </div>
+        <div class='col-sm-12'>
+          <div id='contTareas' class='cont-tareas'>
+            {{#each arrObjData}}
+              <div class='card animate__animated' id='cardId{{this._id}}' style='margin-bottom: 1rem;'>
+                <div class='card-body'>
+                  <p id='est{{this._id}}'><i class='{{this.classIcon}}' style='color: {{this.colorIcon}}'></i> {{this.estado}}</p>
+                  <p class='card-text' id='des{{this._id}}'>{{this.descripcion}}</p>
+                  <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat{{this._id}}'>{{this.categoria}}</span></div>
+                  <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub{{this._id}}'>{{this.subcategoria}}</span></div>
+                  <p style='margin-top: 1rem;'><i class='bx bxs-calendar'></i> {{this.fechaDesde}} ~ {{this.fechaHasta}}</p>
 
-        {{#each arrObjData}}
-
-          {{! todo, los estilos pasar a un css luego }}
-          <div class='col-sm-12'>
-            <div class='card animate__animated' id='cardId{{this._id}}' style='margin-bottom: 1rem;'>
-              <div class='card-body'>
-                <p id='est{{this._id}}'><i class='{{this.classIcon}}' style='color: {{this.colorIcon}}'></i> {{this.estado}}</p>
-                <p id='des{{this._id}}'>{{this.descripcion}}</p>
-                <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat{{this._id}}'>{{this.categoria}}</span></div>
-                <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub{{this._id}}'>{{this.subcategoria}}</span></div>
-                <p style='margin-top: 1rem;'><i class='bx bxs-calendar'></i> {{this.fechaDesde}} ~ {{this.fechaHasta}}</p>
-                <b style='color: rgb(255, 145, 0);'>fecha creacion tarea (dia en el que se agregó): {{this.fechaCreacion}}</b>
-
-                <div class='d-flex justify-content-end'>
-                  <a href='/tarea/editar/{{this._id}}' class='btn card__btn btn_edit' tabindex='-1' role='button'><i class='bx bxs-edit'></i></a>
-                  <button data-id='{{this._id}}' type='button' class='btn card__btn btn_eliminar_tarea'><i class='bx bxs-trash-alt icon_eliminar_tarea'></i></button>
+                  <div class='card-footer'>
+                    <small class='text-muted'><b>Creada:</b> {{this.fechaCreacion}}</small>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        {{/each}}
-
-      </div>
-    </div>
-
-    <div class='container mt-3'>
-      <div class='d-flex justify-content-center'>
-        <nav aria-label='Page navigation example'>
-          <ul class='pagination'>
-            <li id='btnBackPag' class='page-item'>
-              <a class='page-link' href='#' tabindex='-1' aria-disabled='true'><i class='bx bx-chevron-left' style='font-size: 1.99rem'></i></a>
-            </li>
-            {{#each arrPaginacion}}
-              <li id='pag{{this}}' class='page-item page-item-num'><a class='page-link' href='/tarea/lista/{{this}}'>{{this}}</a></li>
             {{/each}}
-            <li id='btnNextPag' class='page-item'><a class='page-link' href='#'><i class='bx bx-chevron-right' style='font-size: 1.99rem'></i></a></li>
-          </ul>
-        </nav>
-      </div>
+          </div>
+        </div>
 
+      </div>
     </div>
   </div>
 
   <script src='/js/tarea/vwlistatareas.js'></script>
 
 {{else}}
-  No hay tareas pe
+  <h5 id='txtCasoNoTareas'>( ﾉ ﾟｰﾟ)ﾉ No hay tareas ＼(ﾟｰﾟ＼)</h5>
+
+  <img src='/img/Thinking_Flatline.svg' class='img-fluid' alt='...' />
 {{/if}}
 
-<!-- Modal -->
+<!-- Modal filtros -->
 <div class='modal fade' id='modalFiltro' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
   <div class='modal-dialog'>
     <div class='modal-content'>
@@ -152,9 +132,59 @@
   </div>
 </div>
 
+<!-- Modal tarea detalle -->
+<div class='modal fade' id='modalDetalleTarea' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title'><i class='bx bxs-lemon'></i> Detalle tarea</h5>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+
+      {{! * loader }}
+      <div class='second-loader'>
+        <div id='wifi-loader'>
+          <svg class='circle-outer' viewBox='0 0 86 86'>
+            <circle class='back' cx='43' cy='43' r='40'></circle>
+            <circle class='front' cx='43' cy='43' r='40'></circle>
+            <circle class='new' cx='43' cy='43' r='40'></circle>
+          </svg>
+          <svg class='circle-middle' viewBox='0 0 60 60'>
+            <circle class='back' cx='30' cy='30' r='27'></circle>
+            <circle class='front' cx='30' cy='30' r='27'></circle>
+          </svg>
+          <svg class='circle-inner' viewBox='0 0 34 34'>
+            <circle class='back' cx='17' cy='17' r='14'></circle>
+            <circle class='front' cx='17' cy='17' r='14'></circle>
+          </svg>
+          <div class='text' data-text='paciencia'></div>
+        </div>
+      </div>
+
+      <div class='modal-body display_none'>
+
+        <p id='detEstado'></p>
+        <p id='detDescripcion' class='card-text'></p>
+        <div id='detCategoria' style='font-size: 1.2rem; font-weight: bold;'></div>
+        <div id='detSubcategoria' style='color: #b7b1b1; margin-top: -0.5rem;'></div>
+        <p id='detFechaDH' style='margin-top: 1rem;'></p>
+
+        {{! todo, cambiar estos botones para el footer? }}
+        {{! todo, todavia estos botones falta arreglarlos en el JS y en el CSS (no se ven xD) }}
+        <div id='contBotonesModal' class='d-flex justify-content-end'>
+          <a id='btnEditarTarea' href='' class='btn card__btn btn_edit' tabindex='-1' role='button'><i class='bx bxs-edit'></i></a>
+          <button id='btnEliminarTarea' data-id='' type='button' class='btn card__btn btn_eliminar_tarea'><i class='bx bxs-trash-alt icon_eliminar_tarea'></i></button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
 <script src='/js/tarea/vwlistatareasFiltro.js'></script>
 <script src='/js/tarea/floatingButtonsList.js'></script>
 
+<!-- botón flotante -->
 <div class='cont_btn_floating'>
   <div class='buttons-list'>
     <div class='btn-toggle-list'>

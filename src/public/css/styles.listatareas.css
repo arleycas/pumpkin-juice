@@ -108,26 +108,57 @@
   top: calc(50% - 2px);
 }
 
-/* Card tarea */
-.card {
-  border-radius: 10px;
+/* * card tarea */
+.cont-tareas {
+  padding: .5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /*cada card*/
+  gap: 20px;
 }
 
-.card .card__btn{
+.card {
+  border-radius: 10px;
+  cursor: pointer;
+  /* height: 200px; */
+  transition: .2s;
+}
+
+.card .card-body {
+  /* para que al darle click solo tome el padre y ninguno de sus hijos */
+  pointer-events: none;
+}
+
+.card .card-footer {
+  border-top: none;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card .card-text {
+  /* height: 100px; */
+  /* border: 1px solid; */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+#modalDetalleTarea .card__btn{
   margin: .5rem;
   padding: 0;
 }
-.card .card__btn:focus{
+#modalDetalleTarea.card__btn:focus{
   box-shadow: none;
   color: #8a3535;
 }
 
-.card .card__btn i{
-  color: #888;
-  font-size: 1.3rem;
+#modalDetalleTarea .card__btn i{
+  color: #a700a2;
+  font-size: 1.5rem;
 }
 
-/* Modal filtros */
+/* * modal filtros */
 .cont_filtro {
   border: 1px solid #eceeef;
   border-radius: 8px;

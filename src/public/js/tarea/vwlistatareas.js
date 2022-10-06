@@ -1,26 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
   const
     phraseRandom = document.querySelector('#phraseRandom'),
-    contCardTareas = document.querySelector('#contCardTareas'),
-    btnBackPag = document.querySelector('#btnBackPag'),
-    btnNextPag = document.querySelector('#btnNextPag');
-  let nPagActual = 1;
+    contTareas = document.querySelector('#contTareas'),
+    modalDetalleTarea = new bootstrap.Modal(document.getElementById('modalDetalleTarea')),
+    contBotonesModal = document.querySelector('#contBotonesModal'),
+    btnEditarTarea = document.querySelector('#btnEditarTarea'),
+    btnEliminarTarea = document.querySelector('#btnEliminarTarea');
+
 
   // * manejador de la url de este modulo
   if (window.location.pathname.length) {
-    const
-      arrUrl = window.location.pathname.split('/');
-    nPagActual = parseInt(arrUrl[arrUrl.length - 1]);
-    const
-      cantPaginas = document.querySelectorAll('.page-item-num').length,
-      nPagBack = nPagActual - 1,
-      nPagNext = nPagActual + 1,
-      btnPage = document.querySelector(`#pag${nPagActual}`);
-
-    // * si la pagina actual no tiene cards, entonces que me envie a la anterior página
-    if (document.querySelectorAll('.card').length === 0) {
-      window.location.href = `/tarea/lista/${nPagActual - 1}`;
-    }
 
     // * (manejador de variables de URL) comprueba si hay alguna card nueva creada que necesite ser animada
     if (window.location.search) {
@@ -32,39 +21,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (idCard) {
         if (card) document.querySelector(`#cardId${idCard}`).classList.add('animate__rubberBand'); // anima la card
-        window.history.pushState({}, document.title, "/tarea/lista/1"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
+        window.history.pushState({}, document.title, "/tarea/lista"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
       }
 
     }
-
-    // * pone pagina actual en botones de editar tarea, para que se envie a la página de edición
-    document.querySelectorAll('.btn_edit').forEach(btn => {
-      // console.log(btn);
-      btn.href += `?pagPrevia=${nPagActual}`;
-    });
-
-    // * gestiona el nav de paginación (botones next y back)
-    btnPage.classList.add('active');
-    btnBackPag.querySelector('a').href = `/tarea/lista/${nPagBack}`;
-    btnNextPag.querySelector('a').href = `/tarea/lista/${nPagNext}`;
-
-    if (nPagBack === 0) {
-      btnBackPag.classList.add('disabled');
-    }
-
-    if (nPagNext > cantPaginas) {
-      btnNextPag.classList.add('disabled');
-    }
   }
 
-  contCardTareas.addEventListener('click', (e) => {
+  contTareas.addEventListener('click', (e) => {
 
-    if (e.target && e.target.classList.contains('btn_eliminar_tarea')) {
-      e.stopPropagation();
+    const
+      idCard = e.target.id,
+      idTarea = idCard.replace('cardId', ''),
+      loaderDetalleTarea = document.querySelector('#modalDetalleTarea .second-loader'),
+      bodyCard = document.querySelector('#modalDetalleTarea .modal-body')
+      ;
 
-      const
-        target = e.target.tagName.toLowerCase() === 'button' ? e.target : e.target.parentElement,
-        idTarea = target.getAttribute('data-id');
+    if (e.target && e.target.classList.contains('card')) {
+      modalDetalleTarea.show();
+
+      postData('/tarea/getTarea', { idTarea })
+        .then(res => {
+          // console.log(res.cooked);
+          const
+            resTarea = res.cooked,
+            detEstado = document.querySelector('#detEstado'),
+            detDescripcion = document.querySelector('#detDescripcion'),
+            detCategoria = document.querySelector('#detCategoria'),
+            detSubcategoria = document.querySelector('#detSubcategoria'),
+            detFechaDH = document.querySelector('#detFechaDH')
+            ;
+
+          // rellena el modal con los datos de la tarea
+          detEstado.innerHTML = `<i class='${resTarea.classIcon}' style='color: ${resTarea.colorIcon}'></i> ${resTarea.estado}`;
+          detDescripcion.innerHTML = resTarea.descripcion;
+          detCategoria.innerHTML = resTarea.categoria;
+          detSubcategoria.innerHTML = resTarea.subcategoria;
+          detFechaDH.innerHTML = `<i class='bx bxs-calendar'></i> ${resTarea.fechaDesde} ~ ${resTarea.fechaHasta}`;
+          btnEditarTarea.href = `/tarea/editar/${resTarea._id}`;
+          btnEliminarTarea.setAttribute('data-id', resTarea._id);
+
+          loaderDetalleTarea.classList.add('display_none'); // oculta
+          bodyCard.classList.remove('display_none'); // muestra
+        });
+
+    }
+
+  });
+
+  contBotonesModal.addEventListener('click', (e) => {
+
+    if (e.target && e.target.id === 'btnEliminarTarea') {
+
+      const idTarea = e.target.getAttribute('data-id');
+      console.log(idTarea);
 
       Swal.fire({
         title: '¿Segura?',
@@ -83,11 +92,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
           postData('/tarea/eliminar', { idTarea })
             .then(res => {
-              console.log(res);
+              // console.log(res);
 
               if (res) {
-                console.log(target.parentElement.parentElement);
-                target.parentElement.parentElement.classList.add('animate__bounceOutLeft'); // apunta a la 'card'
+
+                document.querySelector(`#cardId${idTarea}`).classList.add('animate__bounceOutLeft');
+                modalDetalleTarea.hide();
                 setTimeout(() => {
                   window.location.href = `/tarea/lista/${nPagActual}`
                 }, 500);
@@ -101,10 +111,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ** en caso de que le den click al icono dentro de botón eliminar
     if (e.target && e.target.tagName === 'I') {
       const padre = e.target.parentElement;
-      if (padre.classList.contains('btn_eliminar_tarea')) {
+      if (padre.id === 'btnEliminarTarea') {
         padre.click();
       }
     }
+
   });
 
   // * frase random

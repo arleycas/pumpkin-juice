@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         proccessResponse({
           res,
-          inCaseValid: () => { window.location.href = `/tarea/lista/${pagPrevia}?anicard=${inpIdTarea.value}` }
+          inCaseValid: () => { window.location.href = `/tarea/lista?anicard=${inpIdTarea.value}` }
         });
       });
   });

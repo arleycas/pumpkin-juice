@@ -5,27 +5,74 @@ document.addEventListener('DOMContentLoaded', () => {
     modalDetalleTarea = new bootstrap.Modal(document.getElementById('modalDetalleTarea')),
     contBotonesModal = document.querySelector('#contBotonesModal'),
     btnEditarTarea = document.querySelector('#btnEditarTarea'),
-    btnEliminarTarea = document.querySelector('#btnEliminarTarea');
+    btnEliminarTarea = document.querySelector('#btnEliminarTarea'),
+    rainbowText = document.querySelector('.rainbow-text'),
+    contSinTareas = document.querySelector('.cont-sintareas');
 
+  cargarLoader();
 
-  // * manejador de la url de este modulo
-  if (window.location.pathname.length) {
+  getData(`/tarea/getAllTareas${window.location.search}`)
+    .then((res) => {
+      console.log(res);
+      let listaTareas = '';
 
-    // * (manejador de variables de URL) comprueba si hay alguna card nueva creada que necesite ser animada
-    if (window.location.search) {
-      const
-        queryString = window.location.search, // retorna algo como '?anicard=1234'
-        urlParams = new URLSearchParams(queryString), // guarda todas las variables de la URL
-        idCard = urlParams.get('anicard'), // se obtiene la que necesitamos
-        card = document.querySelector(`#cardId${idCard}`);
+      if (res.cantTareas > 0) {
+        const arrObjData = res.arrObjData;
+        arrObjData.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)); // ordena por fecha de creación (la mayor aparece de primero)
 
-      if (idCard) {
-        if (card) document.querySelector(`#cardId${idCard}`).classList.add('animate__rubberBand'); // anima la card
-        window.history.pushState({}, document.title, "/tarea/lista"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
+        arrObjData.forEach(data => {
+          listaTareas += `
+          <div class='card animate__animated' id='cardId${data._id}' style='margin-bottom: 1rem;'>
+            <div class='card-body'>
+              <p id='est${data._id}'><i class='${data.classIcon}' style='color: ${data.colorIcon}'></i> ${data.estado}</p>
+              <p class='card-text' id='des${data._id}'>${data.descripcion}</p>
+              <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat${data._id}'>${data.categoria}</span></div>
+              <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub${data._id}'>${data.subcategoria}</span></div>
+              <p style='margin-top: 1rem;'><i class='bx bxs-calendar'></i> ${data.fechaDesde} ~ ${data.fechaHasta}</p>
+  
+              <div class='card-footer'>
+                <small class='text-muted'><b>Creada:</b> ${data.fechaCreacion}</small>
+              </div>
+            </div>
+          </div>
+          `;
+        });
+
+        rainbowText.innerHTML = `Tareas ${res.cantTareas}`;
+        contTareas.innerHTML = listaTareas;
+        ocultarLoader();
+
+        // * manejador de la url de este modulo
+        if (window.location.pathname.length) {
+
+          // * (manejador de variables de URL)
+          if (window.location.search) {
+
+            // comprueba si hay alguna card nueva creada que necesite ser animada
+            const
+              queryString = window.location.search, // retorna algo como '?anicard=1234'
+              urlParams = new URLSearchParams(queryString), // guarda todas las variables de la URL
+              idCard = urlParams.get('anicard'), // se obtiene la que necesitamos
+              card = document.querySelector(`#cardId${idCard}`);
+
+            if (idCard) {
+              if (card) {
+                card.scrollIntoView({ behavior: 'auto', block: 'center' });
+                card.classList.add('animate__delay-1s'); // delay en lo que se hace scroll a la card
+                card.classList.add('animate__rubberBand'); // anima la card
+              }
+              window.history.pushState({}, document.title, "/tarea/lista"); // limpia la url en el caso de que le den F5 no se vuelva a animar la card (y no refresca la página)
+            }
+          }
+        }
       }
 
-    }
-  }
+      if (res.cantTareas === 0) {
+        rainbowText.innerHTML = 'No hay tareas';
+        contSinTareas.classList.remove('display_none'); // muestra
+        ocultarLoader();
+      }
+    });
 
   contTareas.addEventListener('click', (e) => {
 
@@ -99,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.querySelector(`#cardId${idTarea}`).classList.add('animate__bounceOutLeft');
                 modalDetalleTarea.hide();
                 setTimeout(() => {
-                  window.location.href = `/tarea/lista/${nPagActual}`
+                  window.location.href = `/tarea/lista`
                 }, 500);
               }
             });

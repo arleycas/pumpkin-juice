@@ -18,7 +18,12 @@ const userSchema = new Schema({
     required: true,
     trim: true
   },
-  lastLogin: Date
+  lastLogin: Date,
+  createdAt: {
+    type: Date,
+    required: true,
+    default: Date.now
+  },
 }, {
   timestamps: true, // esto es para saber su createdAt y updatedAt,
   versionKey: false, // es una cosa interna que crea automaticamente que no interesa tenerla

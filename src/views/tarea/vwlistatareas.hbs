@@ -6,54 +6,36 @@
   <p>Mis tareas</p>
 </div>
 
-{{#if hayTareas}}
+<div id='contCardTareas'>
+  <div class='container'>
 
-  <div id='contCardTareas'>
-    <div class='container'>
-
-      <div class='row' style='margin-top: 1rem;'>
-        <div class='col-sm-12 col-md-6 d-flex flex-column'>
-          <p style='letter-spacing: 2px;'>🎃 <span id='phraseRandom'></span></p>
-        </div>
-
-        <div class='col-sm-12 col-md-6 d-flex flex-column'>
-          <p style='text-align: end; font-size: 1.2rem;'><span class='rainbow-text'>Tareas {{cantTareas}}</span></p>
-        </div>
+    <div class='row' style='margin-top: 1rem;'>
+      <div class='col-sm-12 col-md-6 d-flex flex-column'>
+        <p style='letter-spacing: 2px;'>🎃 <span id='phraseRandom'></span></p>
       </div>
 
-      <div class='row'>
-
-        <div class='col-sm-12'>
-          <div id='contTareas' class='cont-tareas'>
-            {{#each arrObjData}}
-              <div class='card animate__animated' id='cardId{{this._id}}' style='margin-bottom: 1rem;'>
-                <div class='card-body'>
-                  <p id='est{{this._id}}'><i class='{{this.classIcon}}' style='color: {{this.colorIcon}}'></i> {{this.estado}}</p>
-                  <p class='card-text' id='des{{this._id}}'>{{this.descripcion}}</p>
-                  <div style='font-size: 1.2rem; font-weight: bold;'><span id='cat{{this._id}}'>{{this.categoria}}</span></div>
-                  <div style='color: #b7b1b1; margin-top: -0.5rem;'><span id='sub{{this._id}}'>{{this.subcategoria}}</span></div>
-                  <p style='margin-top: 1rem;'><i class='bx bxs-calendar'></i> {{this.fechaDesde}} ~ {{this.fechaHasta}}</p>
-
-                  <div class='card-footer'>
-                    <small class='text-muted'><b>Creada:</b> {{this.fechaCreacion}}</small>
-                  </div>
-                </div>
-              </div>
-            {{/each}}
-          </div>
-        </div>
-
+      <div class='col-sm-12 col-md-6 d-flex flex-column'>
+        <p style='text-align: end; font-size: 1.2rem;'><span class='rainbow-text'></span></p>
       </div>
     </div>
+
+    <div class='row'>
+
+      <div class='col-sm-12'>
+        <div id='contTareas' class='cont-tareas'>
+
+        </div>
+      </div>
+
+    </div>
   </div>
+</div>
 
-  <script src='/js/tarea/vwlistatareas.js'></script>
+<script src='/js/tarea/vwlistatareas.js'></script>
 
-{{else}}
-  <h5 id='txtCasoNoTareas'>( ﾉ ﾟｰﾟ)ﾉ No hay tareas ＼(ﾟｰﾟ＼)</h5>
-
+<div class='cont-sintareas display_none'>
   <img src='/img/Thinking_Flatline.svg' class='img-fluid' alt='...' />
-{{/if}}
+</div>
 
 <!-- Modal filtros -->
 <div class='modal fade' id='modalFiltro' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>

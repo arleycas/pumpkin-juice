@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <td>${obj.categoria}</td>
                   <td>${obj.subcategoria}</td>
                   <td>${obj.estado}</td>
-                  <td>${beautyDate(obj.fechaDesde)} ~ ${beautyDate(obj.fechaHasta)}</td>
+                  <td>${obj.fechaDesde} ~ ${obj.fechaHasta}</td>
                 </tr>
                 `;
               });
@@ -107,33 +107,5 @@ document.addEventListener('DOMContentLoaded', () => {
         ocultarLoader();
       });
   });
-
-
-  function beautyDate(strDate) {
-    const
-      arrDateTime = strDate.split('T'),
-      arrDate = arrDateTime[0].split('-'),
-      year = arrDate[0],
-      month = arrDate[1],
-      day = arrDate[2],
-      objMonth = {
-        '01': 'Ene',
-        '02': 'Feb',
-        '03': 'Mar',
-        '04': 'Abr',
-        '05': 'May',
-        '06': 'Jun',
-        '07': 'Jul',
-        '08': 'Ago',
-        '09': 'Sep',
-        '10': 'Oct',
-        '11': 'Nov',
-        '12': 'Dic',
-      };
-
-    return `${objMonth[month]} ${day}/${year.slice(-2)}`;
-  }
-
-
 
 });

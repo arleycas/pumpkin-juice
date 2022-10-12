@@ -50,6 +50,7 @@ Commons.validateDataBackend = (objRevision) => {
 
 Commons.beautyDate = (date) => {
   // transforma objeto de tipo date de JS en string de fecha bonita
+  console.log(date);
   const
     rawDate = new Date(date),
     objMonths = {

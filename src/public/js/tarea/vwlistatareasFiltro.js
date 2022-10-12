@@ -49,7 +49,6 @@ document.addEventListener('DOMContentLoaded', () => {
       res.forEach(obj => {
         selFiltroCategoria.innerHTML += `<option value='${obj._id}'>${obj.categoria}</option>`;
       });
-      ocultarLoader();
     });
 
   btnToggleCategorias.addEventListener('click', (e) => {

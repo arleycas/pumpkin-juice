@@ -109,6 +109,12 @@
 }
 
 /* * card tarea */
+
+.cont-sintareas {
+  width: 360px;
+  margin: 0 auto;
+}
+
 .cont-tareas {
   padding: .5rem;
   display: grid;

@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (res.cantTareas > 0) {
         const arrObjData = res.arrObjData;
-        arrObjData.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)); // ordena por fecha de creación (la mayor aparece de primero)
+        arrObjData.sort((a, b) => new Date(b.fechaCreacion) - new Date(a.fechaCreacion)); // ordena por fecha de creación (la ultima agregada aparece de primero)
 
         arrObjData.forEach(data => {
           listaTareas += `
